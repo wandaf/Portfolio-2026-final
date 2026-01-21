@@ -111,8 +111,7 @@ const Hero: React.FC = () => {
           
           <div className="max-w-2xl">
             <p className="text-lg md:text-2xl font-light tracking-tight leading-relaxed opacity-80 mb-10 md:mb-16 transition-opacity duration-1000 delay-500" style={{ opacity: isMounted ? 0.8 : 0 }}>
-              is a data-driven designer creating digital experiences that 
-              simplify, uplift, and nurture human connection.
+              is a data-driven designer with experience in branding, UX design, and motion.
             </p>
           </div>
 
@@ -123,7 +122,7 @@ const Hero: React.FC = () => {
             </div>
             <div className="space-y-2">
               <h3 className="text-[10px] md:text-[11px] uppercase tracking-[0.3em] font-medium text-white font-mono-tag">Philosophy</h3>
-              <p className="text-xs md:text-sm opacity-50 font-light max-w-[280px]">Empathetic storytelling, human connection, & tech for social good</p>
+              <p className="text-xs md:text-sm opacity-50 font-light max-w-[280px]">Design happens in conversation with others</p>
             </div>
           </div>
 
