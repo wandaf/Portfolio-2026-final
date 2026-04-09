@@ -1,5 +1,5 @@
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CaseStudy } from '../types';
 
 interface CaseStudyViewProps {
@@ -142,6 +142,116 @@ const MCDONALDS_GALLERY_ROW_2 = [
   'assets/imgs/Mcdonalds/fzwbpbdhFVLhAWhcUm6yr2PMog.png.webp',
   'assets/imgs/Mcdonalds/CwHPBomIJykO7JgFCOElWYDbz3c.png.webp',
 ];
+
+const LULU_HERO = 'assets/imgs/lulu/kYZRTpDanLNfZKlx5CrQG4EF4s.png.webp';
+const LULU_GALLERY_FULL = [
+  'assets/imgs/lulu/HSaWAQFUD1zlSwRSRDKnwVxk.png.webp',
+  'assets/imgs/lulu/MmnYaHvbTsQYXve1OxYbRui4.gif',
+  'assets/imgs/lulu/pFtYvjhziehwZIq78VlJLauUiA.png.webp',
+  'assets/imgs/lulu/QSholvwyZglzKvALGgPpe9MmhI8.webp',
+  'assets/imgs/lulu/RxUMY6fFZPnPGeogHvog7wFFZ6M.png.webp',
+  'assets/imgs/lulu/Ynjt4NLS1diZyXCXPdkh2BGHfns.png.webp',
+  'assets/imgs/lulu/yfbGbxrhuyaAqehaLfji5icFnE.webp',
+  'assets/imgs/lulu/eHDmIfGmM5q9Xhbjrc2tYe6lg4.png.webp',
+  'assets/imgs/lulu/ZUPoDZdDRXOabr6g4KdxV9mfFBE.webp',
+];
+const LULU_PAIR_ROW = [
+  'assets/imgs/lulu/4GBLiVlt2w19L6N8oSCx6uxsEyw.png.webp',
+  'assets/imgs/lulu/AgEOl46SohWNcHJNt3pzSJQ.png.webp',
+];
+
+const LULU_OOH_GAP_PX = 6;
+
+/** Side-by-side OOH: same rendered height, widths from intrinsic aspect ratios, full row width, thin gap only. */
+const LululemonOohPair: React.FC = () => {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const imgRef0 = useRef<HTMLImageElement>(null);
+  const imgRef1 = useRef<HTMLImageElement>(null);
+  const [rowHeight, setRowHeight] = useState<number | null>(null);
+  const [isStacked, setIsStacked] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia('(max-width: 639px)').matches : false
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 639px)');
+    const onChange = () => setIsStacked(mq.matches);
+    if (mq.addEventListener) mq.addEventListener('change', onChange);
+    else mq.addListener(onChange);
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener('change', onChange);
+      else mq.removeListener?.(onChange);
+    };
+  }, []);
+
+  const layout = useCallback(() => {
+    if (isStacked) {
+      setRowHeight(null);
+      return;
+    }
+    const wrap = wrapRef.current;
+    const a = imgRef0.current;
+    const b = imgRef1.current;
+    if (!wrap || !a || !b || !a.naturalWidth || !b.naturalWidth) return;
+    const W = wrap.getBoundingClientRect().width;
+    if (W <= 0) return;
+    const r0 = a.naturalWidth / a.naturalHeight;
+    const r1 = b.naturalWidth / b.naturalHeight;
+    const H = (W - LULU_OOH_GAP_PX) / (r0 + r1);
+    setRowHeight(Math.max(1, H));
+  }, [isStacked]);
+
+  useEffect(() => {
+    layout();
+  }, [layout, isStacked]);
+
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', layout);
+      return () => window.removeEventListener('resize', layout);
+    }
+    const ro = new ResizeObserver(() => layout());
+    ro.observe(wrap);
+    return () => ro.disconnect();
+  }, [layout]);
+
+  const onImgLoad = () => layout();
+
+  return (
+    <div
+      ref={wrapRef}
+      className={`flex w-full ${isStacked ? 'flex-col gap-4' : 'flex-row flex-nowrap items-start'}`}
+      style={
+        isStacked
+          ? undefined
+          : {
+              gap: LULU_OOH_GAP_PX,
+              ...(rowHeight == null ? { visibility: 'hidden' as const } : {}),
+            }
+      }
+    >
+      {LULU_PAIR_ROW.map((src, i) => (
+        <img
+          key={src}
+          ref={i === 0 ? imgRef0 : imgRef1}
+          src={normalizeAssetSrc(src)}
+          alt={`Lululemon campaign OOH ${i + 1}`}
+          loading="eager"
+          decoding="async"
+          draggable={false}
+          onLoad={onImgLoad}
+          className={`block max-w-none shrink-0 ${isStacked ? 'h-auto w-full' : 'w-auto'}`}
+          style={
+            !isStacked && rowHeight != null
+              ? { height: rowHeight, width: 'auto' }
+              : undefined
+          }
+        />
+      ))}
+    </div>
+  );
+};
 
 const MCDONALDS_CHANGEABLES_SEQUENCE = [1, 2, 3].map(
   (n) => `assets/imgs/Mcdonalds/Project 2/${n}.jpg`
@@ -356,6 +466,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
   const isEditorial = study.slug === 'editorial-design' || study.id === 5;
   const isFaceless = study.slug === 'faceless-affair' || study.id === 3;
   const isVivBrand = study.slug === 'viv-brand-project' || study.id === 8;
+  const isLululemon = study.slug === 'lululemon-campaign' || study.id === 6;
 
   const sections = isMcdonalds
     ? [
@@ -399,6 +510,12 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
         { id: 'journey', label: 'User Journey' },
         { id: 'visual-design', label: 'Visual Design' },
         { id: 'final', label: 'Final Thoughts' },
+      ]
+    : isLululemon
+    ? [
+        { id: 'overview', label: 'Overview' },
+        { id: 'visual-identity', label: 'Visual Identity' },
+        { id: 'gallery', label: 'Gallery' },
       ]
     : [
         { id: 'overview', label: 'Overview' },
@@ -469,6 +586,8 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
               ? 'assets/MTA/Air7GrLLZ576mafZW991PNnKQI-ezgif.com-optimize.gif'
               : isVivBrand
               ? 'assets/imgs/Viv Brand/heroImage.jpg'
+              : isLululemon
+              ? LULU_HERO
               : study.slug === 'editorial-design'
               ? 'assets/imgs/Editorial/2I7GWougET3BKSbEA8Rqq5vg.png'
               : study.imageUrl
@@ -489,7 +608,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
           {/* Header Section */}
           <div className="mb-24 md:mb-32">
             <FadeInSection>
-              <p className="text-[10px] md:text-xs font-bold uppercase tracking-[0.15em] text-gray-400 mb-4 font-mono-tag">
+              <p className="text-[10px] md:text-xs font-normal uppercase tracking-[0.15em] text-gray-400 mb-4 font-mono-tag">
                 {study.category || "Case Study"}
               </p>
               <h1 className="text-[1.9125rem] md:text-[3.825rem] font-light font-['IBM_Plex_Serif'] tracking-tight mb-6 leading-[1.0] text-gray-900 max-w-3xl">
@@ -1245,6 +1364,71 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                             <li>Creating alternate plots for different characters as the murderer.</li>
                             <li>Potentially expanding to new rooms and settings.</li>
                           </ul>
+                        </div>
+                      </div>
+                    </FadeInSection>
+                  </section>
+                </>
+              ) : isLululemon ? (
+                <>
+                  <section id="overview" className="scroll-mt-40">
+                    <FadeInSection>
+                      <div className="text-gray-600 font-light text-lg leading-relaxed space-y-12 max-w-2xl">
+                        <p>
+                          Campaign developed with Charlie Henson (AD), Laura Farina (ST), Julia Daum (ST), Ross Atkinson (CW), and Adam Fuller (CW).
+                        </p>
+                        <div className="space-y-4">
+                          <h3 className="text-base font-semibold text-gray-900">Problem</h3>
+                          <p>
+                            Millennial women have been cultured to be harsh on themselves, leading to feeling disconnected from their bodies.
+                          </p>
+                        </div>
+                        <div className="space-y-4">
+                          <h3 className="text-base font-semibold text-gray-900">Strategy</h3>
+                          <p>Present feeling comfortable in your body as the beginning to feeling comfortable in the world.</p>
+                        </div>
+                        <div className="space-y-4">
+                          <h3 className="text-base font-semibold text-gray-900">Creative Insight</h3>
+                          <p>
+                            Your home is the place where you feel the most comfortable. But home is a feeling, not a place. And if you feel at home in your body, you’ll feel good everywhere else – and we
+                            think that’s something to celebrate.
+                          </p>
+                        </div>
+                      </div>
+                    </FadeInSection>
+                  </section>
+
+                  <section id="visual-identity" className="scroll-mt-40">
+                    <FadeInSection>
+                      <SectionHeading title="The Visual Identity" />
+                      <p className="text-gray-600 font-light text-lg leading-relaxed max-w-2xl">
+                        For the campaign, we used the visual symbol of a house overlaid on active, vibrant photography.
+                      </p>
+                    </FadeInSection>
+                  </section>
+
+                  <section id="gallery" className="scroll-mt-40">
+                    <FadeInSection>
+                      <div className="space-y-8">
+                        {LULU_GALLERY_FULL.map((src, i) => (
+                          <div key={src} className="relative w-full">
+                            <img
+                              src={normalizeAssetSrc(src)}
+                              alt={`Lululemon campaign ${i + 1}`}
+                              loading="lazy"
+                              decoding="async"
+                              className="w-full h-auto block"
+                            />
+                          </div>
+                        ))}
+                        <div className="space-y-4">
+                          <div className="max-w-2xl space-y-3">
+                            <h3 className="text-base font-semibold text-gray-900">OOH activation</h3>
+                            <p className="text-gray-600 font-light text-lg leading-relaxed">
+                              Lululemon will sponsor physical activations encouraging people to get outside while feeling at home in their body.
+                            </p>
+                          </div>
+                          <LululemonOohPair />
                         </div>
                       </div>
                     </FadeInSection>

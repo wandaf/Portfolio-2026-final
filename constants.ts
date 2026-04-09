@@ -1,5 +1,21 @@
 import { CaseStudy, PlaygroundItem } from './types';
 
+/** Restore this object into `CASE_STUDIES` (e.g. replace the Lululemon entry) to bring back The Secret Garden on the grid. */
+export const SECRET_GARDEN_CASE_STUDY: CaseStudy = {
+  id: 6,
+  slug: 'secret-garden-viz',
+  title: 'The Secret Garden Data Visualization',
+  category: 'Information Design',
+  subhead: 'Exploring literature through data',
+  tags: ['Information Design', 'Web Design'],
+  imageUrl: 'assets/imgs/Case4.png',
+  description: 'Mapping the linguistic landscape of classic literature.',
+  timeline: '5 Weeks',
+  role: 'Information Designer',
+  tools: 'D3.js, Python, Figma',
+  externalUrl: 'https://thesecretgardenindata.framer.website/',
+};
+
 export const CASE_STUDIES: CaseStudy[] = [
   {
     id: 1,
@@ -70,17 +86,16 @@ export const CASE_STUDIES: CaseStudy[] = [
   },
   {
     id: 6,
-    slug: "secret-garden-viz",
-    title: "The Secret Garden Data Visualization",
-    category: "Information Design",
-    subhead: "Exploring literature through data",
-    tags: ["Information Design", "Web Design"],
-    imageUrl: "assets/imgs/Case4.png",
-    description: "Mapping the linguistic landscape of classic literature.",
-    timeline: "5 Weeks",
-    role: "Information Designer",
-    tools: "D3.js, Python, Figma",
-    externalUrl: "https://thesecretgardenindata.framer.website/"
+    slug: 'lululemon-campaign',
+    title: 'Lululemon Campaign',
+    category: 'Design and Branding',
+    subhead: 'A campaign celebrating the idea that your body is a home',
+    tags: ['Campaign Design', 'Branding'],
+    imageUrl: 'assets/imgs/lulu/Cover.webp',
+    description: 'A campaign celebrating the idea that your body is a home',
+    timeline: '2 Weeks',
+    role: 'Designer, Researcher',
+    tools: 'Figma, Adobe Illustrator, AfterEffects',
   },
   {
     id: 5,
