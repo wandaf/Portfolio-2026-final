@@ -7,17 +7,17 @@ const FULL_SPAN_IDS = [5, 13, 15];
 function buildDisplayOrder(): (typeof PLAYGROUND_ITEMS[0] | null)[] {
   const byId = new Map(PLAYGROUND_ITEMS.map((item) => [item.id, item]));
   const idsInOrder: (number | null)[] = [
-    1, 2, 3,
+    28, 4, 29,
+    2, 1, 3,
     5,
-    4, 6, 7,
-    8, 9, 10,
-    11, 12, 14,
-    13,
-    15,
-    16, 17, 18,
-    19, 20, 21,
-    22, 23, 24,
-    25, 26, 27,
+    6, 7, 8,
+    9, 10, 11,
+    12, 14, 13,
+    15, 16, 17,
+    18, 19, 20,
+    21, 22, 23,
+    24, 25, 26,
+    27,
   ];
   return idsInOrder.map((id) => (id === null ? null : byId.get(id)!));
 }

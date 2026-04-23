@@ -154,4 +154,6 @@ export const PLAYGROUND_ITEMS: PlaygroundItem[] = [
   { id: 25, title: "Illustration 25", type: "Illustration", imageUrl: "assets/imgs/Illustrations/jTNFhm6yAEEk2NZGgMSQhYEUI8.png.webp" },
   { id: 26, title: "Illustration 26", type: "Illustration", imageUrl: "assets/imgs/Illustrations/Artboard 1 copy-100.jpg" },
   { id: 27, title: "Illustration 27", type: "Illustration", imageUrl: "assets/imgs/Illustrations/VnPbBfvlDPvpxDD44duLMg8RgZg.png.webp" },
+  { id: 28, title: "Illustration 28", type: "Illustration", imageUrl: "assets/imgs/Illustrations/Artboard 2-100.jpg" },
+  { id: 29, title: "Illustration 29", type: "Illustration", imageUrl: "assets/imgs/Illustrations/visartcover-100.jpg" },
 ];
