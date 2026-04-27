@@ -473,7 +473,6 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
         { id: 'overview', label: 'Background' },
         { id: 'changeables', label: 'Changeables' },
         { id: 'speculative', label: 'Speculative MLB' },
-        { id: 'visuals', label: 'Gallery' },
         { id: 'final', label: 'Final Thoughts' },
       ]
     : isHigherEd
@@ -1123,16 +1122,16 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                           This project was created at VCU Brandcenter for our Physical Computing class. Our task was to design an experience with physical and digital components for a piece of media.
                           Our team chose <em>Knives Out</em> for our piece of media, a movie series about Benoit Blanc, a detective who solves mysteries.
                         </p>
-                        {FACELESS_IMAGES[0] && (
-                          <div className="relative w-full">
-                            <img
-                              src={FACELESS_IMAGES[0]}
-                              alt="Faceless Affair key art"
-                              className="w-full h-auto block"
-                            />
-                          </div>
-                        )}
                       </div>
+                      {FACELESS_IMAGES[0] && (
+                        <div className="relative w-full mt-8">
+                          <img
+                            src={FACELESS_IMAGES[0]}
+                            alt="Faceless Affair key art"
+                            className="w-full h-auto block [clip-path:inset(0_5px_0_0)]"
+                          />
+                        </div>
+                      )}
                     </FadeInSection>
                   </section>
 
@@ -1144,16 +1143,16 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                           We landed on creating a murder mystery game with an additional digital app component. We decided on this strategy because, like the <em>Knives Out</em> movie series, we wanted
                           to add a twist to a classic format.
                         </p>
-                        {FACELESS_IMAGES[1] && (
-                          <div className="relative w-full">
-                            <img
-                              src={FACELESS_IMAGES[1]}
-                              alt="Faceless Affair app overview"
-                              className="w-full h-auto block"
-                            />
-                          </div>
-                        )}
                       </div>
+                      {FACELESS_IMAGES[1] && (
+                        <div className="relative w-full mt-8">
+                          <img
+                            src={FACELESS_IMAGES[1]}
+                            alt="Faceless Affair app overview"
+                            className="w-full h-auto block"
+                          />
+                        </div>
+                      )}
                     </FadeInSection>
                   </section>
 

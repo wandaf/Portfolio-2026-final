@@ -48,10 +48,10 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: "faceless-affair",
     title: "Faceless Affair",
     category: "App and Experience Design",
-    subhead: "A Knives Out murder mystery experience utilizing an app and AR",
+    subhead: "A Knives Out murder mystery experience utilizing AR",
     tags: ["UX Design", "Game Design"],
     imageUrl: "assets/imgs/Case6.png",
-    description: "An interactive murder mystery experience combining a physical game, mobile app, and AR elements inspired by the Knives Out film series.",
+    description: "A Knives Out murder mystery experience utilizing AR",
     timeline: "3 Weeks",
     role: "Designer, Researcher",
     tools: "Figma, Adobe Illustrator, AfterEffects"

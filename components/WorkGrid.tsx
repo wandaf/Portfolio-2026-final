@@ -198,17 +198,17 @@ const GridCard: React.FC<{ study: CaseStudy; onClick: () => void }> = ({ study, 
           />
           <div className="absolute top-4 right-4 flex gap-2">
             {tags.map((tag: string) => (
-              <span key={tag} className="bg-white/40 backdrop-blur-md border border-white/20 text-black text-[9px] px-3 py-1 font-mono-tag font-medium tracking-tight uppercase rounded-full shadow-sm">
+              <span key={tag} className="bg-white/40 backdrop-blur-md border border-white/20 text-black text-[10px] px-4 py-1.5 font-mono-tag font-medium tracking-[0.08em] uppercase rounded-full shadow-sm">
                 {tag}
               </span>
             ))}
           </div>
         </div>
         <div className="mt-4 px-1">
-          <h4 className="text-lg font-semibold text-gray-900 font-serif-heading">
+          <h4 className="text-[1.75rem] font-semibold text-gray-900 font-serif-heading">
             {title.split(':')[0]}
           </h4>
-          <p className="text-[10px] text-gray-400 uppercase tracking-widest mt-1 font-mono-tag">
+          <p className="text-[15.3px] text-[#949ba6] tracking-widest mt-1 font-mono-tag">
             {subhead || tags.join(', ')}
           </p>
         </div>
