@@ -119,6 +119,7 @@ const FeaturedCard: React.FC<{ study: CaseStudy; reverse?: boolean; onClick: () 
   if (!study) return null;
   const title = study.title || "Untitled Project";
   const description = study.description || "Project details coming soon.";
+  const featuredTags = Array.isArray(study.tags) ? study.tags : [];
   
   return (
     <GlowCard 
@@ -136,7 +137,16 @@ const FeaturedCard: React.FC<{ study: CaseStudy; reverse?: boolean; onClick: () 
           </h2>
           
           <div className="space-y-4">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-mono-tag font-medium">From the Case Study</p>
+            <div className="flex flex-wrap gap-2">
+              {featuredTags.map((tag) => (
+                <span
+                  key={tag}
+                  className="border-[0.75px] border-gray-300 text-gray-300 text-[10px] px-4 py-1.5 font-medium tracking-[0.08em] uppercase rounded-full"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
             <p className="text-gray-300 text-sm leading-relaxed max-w-sm">
               {description}
             </p>
@@ -188,7 +198,7 @@ const GridCard: React.FC<{ study: CaseStudy; onClick: () => void }> = ({ study, 
           />
           <div className="absolute top-4 right-4 flex gap-2">
             {tags.map((tag: string) => (
-              <span key={tag} className="bg-white/40 backdrop-blur-md border border-white/20 text-black text-[9px] px-3 py-1 font-mono-tag font-medium tracking-tight uppercase rounded-md shadow-sm">
+              <span key={tag} className="bg-white/40 backdrop-blur-md border border-white/20 text-black text-[9px] px-3 py-1 font-mono-tag font-medium tracking-tight uppercase rounded-full shadow-sm">
                 {tag}
               </span>
             ))}
