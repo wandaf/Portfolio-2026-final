@@ -75,7 +75,7 @@ const App: React.FC = () => {
   useEffect(() => {
     if (typeof document === 'undefined') return;
 
-    const base = 'Wanda Felsenhardt | Digital Designer';
+    const base = 'Wanda Felsenhardt | Visual Designer';
     const spacer = '   ';
     const text = base + spacer;
     let index = 0;
