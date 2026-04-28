@@ -51,7 +51,7 @@ const Footer: React.FC<FooterProps> = ({ onPageChange }) => {
     <footer
       ref={footerRef}
       style={{ height: FOOTER_PANEL_HEIGHT_PX }}
-      className="pointer-events-auto fixed inset-x-0 bottom-0 z-[1] flex flex-col overflow-y-auto overflow-x-hidden bg-[#0d0707] text-white [transform:translateZ(0)]"
+      className="pointer-events-auto fixed inset-x-0 bottom-0 z-[1] flex flex-col overflow-hidden bg-[#0d0707] text-white [transform:translateZ(0)]"
     >
       <div className="pointer-events-none absolute inset-0 z-0">
         <GrainGradient
@@ -70,9 +70,9 @@ const Footer: React.FC<FooterProps> = ({ onPageChange }) => {
       </div>
 
       {/* flex-1 + justify-center: fill footer min-height and vertically center the row in that space */}
-      <div className="relative z-10 flex min-h-0 flex-1 flex-col justify-center px-6 py-6 md:px-12 lg:px-16">
-        <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-12 lg:flex-row lg:items-center lg:justify-between lg:gap-16">
-          <div className="max-w-xl space-y-8 md:space-y-10">
+      <div className="relative z-10 flex min-h-0 flex-1 flex-col justify-center px-6 py-5 md:px-12 md:py-6 lg:px-16">
+        <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-8 md:gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-16">
+          <div className="max-w-xl space-y-6 md:space-y-10">
             <div className="flex items-center gap-2">
               <span
                 className="h-1.5 w-1.5 shrink-0 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)]"
@@ -93,7 +93,7 @@ const Footer: React.FC<FooterProps> = ({ onPageChange }) => {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-16 sm:gap-20 md:gap-24 lg:gap-32">
+          <div className="flex flex-wrap gap-10 sm:gap-16 md:gap-24 lg:gap-32">
             <div>
               <p className="mb-6 font-mono-tag text-[10px] uppercase tracking-[0.2em] text-white/50">Navigation</p>
               <nav className="flex flex-col gap-4">

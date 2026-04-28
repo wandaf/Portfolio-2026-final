@@ -70,6 +70,7 @@ const App: React.FC = () => {
   const [displayLocation, setDisplayLocation] = useState(location);
   const [scrollY, setScrollY] = useState(0);
   const [maxScrollY, setMaxScrollY] = useState(0);
+  const [isMobileViewport, setIsMobileViewport] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Animate document title as a subtle marquee
@@ -96,6 +97,14 @@ const App: React.FC = () => {
       window.clearInterval(interval);
       document.title = base;
     };
+  }, []);
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 767px)');
+    const updateIsMobile = () => setIsMobileViewport(media.matches);
+    updateIsMobile();
+    media.addEventListener('change', updateIsMobile);
+    return () => media.removeEventListener('change', updateIsMobile);
   }, []);
 
   useEffect(() => {
@@ -179,11 +188,11 @@ const App: React.FC = () => {
   // During the final scroll segment, ease the main layer upward slightly slower than the scroll
   // so the fixed footer feels more "stationary" while the white sheet lifts away.
   const footerRevealParallaxPx = useMemo(() => {
-    if (isTransitioning || isCaseStudyRoute) return 0;
+    if (isTransitioning || isCaseStudyRoute || isMobileViewport) return 0;
     const runwayStart = Math.max(0, maxScrollY - FOOTER_PANEL_HEIGHT_PX);
     const inRunway = Math.max(0, scrollY - runwayStart);
     return inRunway * 0.22;
-  }, [scrollY, maxScrollY, isTransitioning, isCaseStudyRoute]);
+  }, [scrollY, maxScrollY, isTransitioning, isCaseStudyRoute, isMobileViewport]);
 
   const mainParallaxStyle =
     footerRevealParallaxPx !== 0

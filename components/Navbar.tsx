@@ -25,8 +25,8 @@ const Navbar: React.FC<NavbarProps> = ({ activePage, onPageChange, isScrolled, i
   const dotColor = isDarkMode ? 'bg-white' : 'bg-black';
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none px-6">
-      <div className={`mt-24 md:mt-8 transition-all duration-700 ease-out pointer-events-auto
+    <nav className="fixed top-6 left-[3.5rem] right-4 z-50 flex justify-start pointer-events-none md:top-0 md:left-0 md:right-0 md:justify-center md:px-6">
+      <div className={`mt-0 md:mt-8 transition-all duration-700 ease-out pointer-events-auto
         ${isScrolled ? 'translate-y-[-10px]' : 'translate-y-0'}
       `}>
         <div className={`relative px-2 py-1.5 rounded-full border backdrop-blur-xl shadow-2xl transition-colors duration-500 ${glassBg}`}>
