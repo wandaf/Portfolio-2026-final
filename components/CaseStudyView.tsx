@@ -528,10 +528,10 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
     const element = document.getElementById(id);
     if (element) {
       const offset = 140; // Space for navbar
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
+      const offsetPosition = window.scrollY + element.getBoundingClientRect().top - offset;
+
+      // Keep the index highlight stable during smooth scrolling.
+      setActiveSection(id);
 
       window.scrollTo({
         top: offsetPosition,
@@ -541,35 +541,30 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
   };
 
   useEffect(() => {
-    if (typeof (window as any).IntersectionObserver === 'undefined') return;
-    const observerOptions = {
-      root: null,
-      rootMargin: '-12% 0px -40% 0px',
-      threshold: [0, 0.05, 0.1, 0.15, 0.25],
+    const updateActiveSection = () => {
+      const offset = 160;
+      let current = sections[0]?.id ?? 'overview';
+
+      for (const section of sections) {
+        const element = document.getElementById(section.id);
+        if (!element) continue;
+        if (element.getBoundingClientRect().top <= offset) {
+          current = section.id;
+        } else {
+          break;
+        }
+      }
+
+      setActiveSection(current);
     };
 
-    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
-      const intersecting = entries.filter((entry) => entry.isIntersecting);
-      if (intersecting.length === 0) return;
-      intersecting.sort(
-        (a, b) => a.target.getBoundingClientRect().top - b.target.getBoundingClientRect().top
-      );
-      setActiveSection(intersecting[0].target.id);
+    updateActiveSection();
+    window.addEventListener('scroll', updateActiveSection, { passive: true });
+    window.addEventListener('resize', updateActiveSection);
+    return () => {
+      window.removeEventListener('scroll', updateActiveSection);
+      window.removeEventListener('resize', updateActiveSection);
     };
-
-    let observer: IntersectionObserver | null = null;
-    try {
-      observer = new IntersectionObserver(handleIntersect, observerOptions);
-    } catch {
-      return;
-    }
-
-    sections.forEach((section) => {
-      const element = document.getElementById(section.id);
-      if (element) observer.observe(element);
-    });
-
-    return () => observer?.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps -- section ids come from study.slug via render; list must match that study only
   }, [study.slug]);
 
@@ -647,7 +642,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                   <button
                     key={section.id}
                     onClick={() => scrollToSection(section.id)}
-                    className={`text-left text-[10px] md:text-[12px] uppercase tracking-widest transition-all duration-500 font-mono-tag ${
+                    className={`text-left text-[10px] md:text-[12px] uppercase tracking-widest transition-all duration-500 ${
                       activeSection === section.id 
                         ? 'text-black font-bold opacity-100 scale-105 origin-left' 
                         : 'text-gray-500 hover:text-gray-900'

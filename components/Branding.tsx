@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { Page } from '../types';
 
 interface BrandingProps {
@@ -9,6 +10,7 @@ interface BrandingProps {
 }
 
 const Branding: React.FC<BrandingProps> = ({ isDarkMode, onPageChange, scrollY }) => {
+  const location = useLocation();
 
   // Shrink from 1.15 to 1.0 over 150px of scroll
   const scrollRange = 150;
@@ -47,6 +49,14 @@ const Branding: React.FC<BrandingProps> = ({ isDarkMode, onPageChange, scrollY }
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    const isCaseStudyRoute = /^\/work\/[^/]+$/.test(location.pathname);
+
+    // On case study pages, jump straight to home route without pre-scrolling.
+    if (isCaseStudyRoute) {
+      onPageChange(Page.WORK);
+      return;
+    }
+
     onPageChange(Page.WORK);
     // Smooth scroll to top when navigating or already at home
     if (window.scrollY > 0) {
