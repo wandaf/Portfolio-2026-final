@@ -70,7 +70,7 @@ const Footer: React.FC<FooterProps> = ({ onPageChange }) => {
       </div>
 
       {/* flex-1 + justify-center: fill footer min-height and vertically center the row in that space */}
-      <div className="relative z-10 flex min-h-0 flex-1 flex-col justify-center px-6 py-5 md:px-12 md:py-6 lg:px-16">
+      <div className="relative z-10 flex min-h-0 flex-1 flex-col justify-center px-6 py-5 md:px-12 md:pt-6 md:pb-[20px] lg:px-16">
         <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-8 md:gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-16">
           <div className="max-w-xl space-y-6 md:space-y-10">
             <div className="flex items-center gap-2">
