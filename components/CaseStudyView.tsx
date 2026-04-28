@@ -574,7 +574,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
   }, [study.slug]);
 
   return (
-    <div className="w-full min-w-0 overflow-x-clip text-black bg-white min-h-screen">
+    <div className="w-full min-w-0 text-black bg-white min-h-screen">
       {/* 1. Impact Hero Image */}
       <div className="w-full h-[52vh] md:h-[59vh] relative overflow-hidden bg-black flex items-center justify-center">
         <img 
@@ -660,7 +660,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
             </aside>
 
             {/* Content Body */}
-            <div className="min-w-0 flex-1 space-y-[6.4rem]">
+            <div className="min-w-0 flex-1 space-y-[6.4rem] overflow-x-clip">
               {isHigherEd ? (
                 <>
                   <section id="overview" className="scroll-mt-40">

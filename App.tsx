@@ -1,7 +1,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { CASE_STUDIES } from './constants';
+import { CASE_STUDIES, FOOTER_PANEL_HEIGHT_PX } from './constants';
 import { CaseStudy, Page } from './types';
 import Navbar from './components/Navbar';
 import Branding from './components/Branding';
@@ -69,6 +69,7 @@ const App: React.FC = () => {
 
   const [displayLocation, setDisplayLocation] = useState(location);
   const [scrollY, setScrollY] = useState(0);
+  const [maxScrollY, setMaxScrollY] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Animate document title as a subtle marquee
@@ -98,11 +99,17 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const updateScrollMetrics = () => {
       setScrollY(window.scrollY);
+      setMaxScrollY(Math.max(0, document.documentElement.scrollHeight - window.innerHeight));
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    updateScrollMetrics();
+    window.addEventListener('scroll', updateScrollMetrics, { passive: true });
+    window.addEventListener('resize', updateScrollMetrics);
+    return () => {
+      window.removeEventListener('scroll', updateScrollMetrics);
+      window.removeEventListener('resize', updateScrollMetrics);
+    };
   }, []);
 
   useEffect(() => {
@@ -113,10 +120,17 @@ const App: React.FC = () => {
         setIsTransitioning(false);
         setScrollY(0);
         window.scrollTo(0, 0);
-      }, 400);
+      }, 300);
       return () => window.clearTimeout(timer);
     }
   }, [location, displayLocation.key]);
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => {
+      setMaxScrollY(Math.max(0, document.documentElement.scrollHeight - window.innerHeight));
+    });
+    return () => cancelAnimationFrame(id);
+  }, [displayLocation.pathname, isTransitioning]);
 
   const handleCaseStudySelect = (study: CaseStudy) => {
     navigate(`/work/${study.slug}`);
@@ -128,6 +142,11 @@ const App: React.FC = () => {
 
   const activePage = useMemo(() => pathToActivePage(location.pathname), [location.pathname]);
   const displayPage = useMemo(() => pathToActivePage(displayLocation.pathname), [displayLocation.pathname]);
+  /** Destination route while a transition is in flight (`location` updates before `displayLocation`). */
+  const targetPage = useMemo(() => pathToActivePage(location.pathname), [location.pathname]);
+  /** White crossfade between light pages; black veil when Playground is source or target so we never flash the wrong tone. */
+  const transitionVeilLight =
+    displayPage !== Page.PLAYGROUND && targetPage !== Page.PLAYGROUND;
 
   // Gradient → white: 0 = only gradient visible, 1 = white overlay fully visible (for nav/branding and transition)
   const whiteFadeProgress = useMemo(() => {
@@ -152,8 +171,27 @@ const App: React.FC = () => {
     return false;
   }, [scrollY, displayPage, darkProgress]);
 
+  const isPlayground = displayPage === Page.PLAYGROUND;
+
+  /** `/work/:slug` case studies use `position: sticky` in the layout; any `transform` on an ancestor breaks it. */
+  const isCaseStudyRoute = /^\/work\/[^/]+$/.test(displayLocation.pathname);
+
+  // During the final scroll segment, ease the main layer upward slightly slower than the scroll
+  // so the fixed footer feels more "stationary" while the white sheet lifts away.
+  const footerRevealParallaxPx = useMemo(() => {
+    if (isTransitioning || isCaseStudyRoute) return 0;
+    const runwayStart = Math.max(0, maxScrollY - FOOTER_PANEL_HEIGHT_PX);
+    const inRunway = Math.max(0, scrollY - runwayStart);
+    return inRunway * 0.22;
+  }, [scrollY, maxScrollY, isTransitioning, isCaseStudyRoute]);
+
+  const mainParallaxStyle =
+    footerRevealParallaxPx !== 0
+      ? ({ transform: `translateY(${footerRevealParallaxPx}px) translateZ(0)` } as const)
+      : undefined;
+
   return (
-    <div className={`min-h-screen w-full flex flex-col transition-colors duration-500 ${displayPage === Page.PLAYGROUND ? 'bg-black' : 'bg-white'} selection:bg-gray-500 selection:text-white`}>
+    <div className="min-h-screen w-full flex flex-col bg-black selection:bg-gray-500 selection:text-white">
       <Branding isDarkMode={isDarkMode} onPageChange={handlePageChange} scrollY={scrollY} />
       
       <Navbar 
@@ -163,45 +201,72 @@ const App: React.FC = () => {
         isDarkMode={isDarkMode}
       />
       
-      <main className={`flex-grow w-full relative z-10 transition-all duration-400 ease-in-out ${isTransitioning ? 'opacity-0 blur-xl' : 'opacity-100 blur-0'}`}>
-        <Routes location={displayLocation}>
-          <Route path="/" element={<WorkRoute onSelectCaseStudy={handleCaseStudySelect} scrollY={scrollY} />} />
-          <Route
-            path="/playground"
-            element={
-              <div className="w-full bg-black overflow-x-hidden">
-                <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16">
-                  <Playground />
+      <div className="relative flex min-h-0 min-w-0 flex-1 flex-col">
+        <div
+          aria-hidden
+          className={`pointer-events-none absolute inset-0 z-[8] transition-opacity duration-300 ease-in-out ${
+            transitionVeilLight ? 'bg-white' : 'bg-black'
+          } ${isTransitioning ? 'opacity-100' : 'opacity-0'}`}
+        />
+        <main
+          style={mainParallaxStyle}
+          className={`relative z-10 flex min-h-0 w-full flex-1 rounded-b-[1.75rem] sm:rounded-b-[2rem] md:rounded-b-[2.5rem] transition-opacity duration-300 ease-in-out ${
+            isCaseStudyRoute ? 'overflow-visible' : 'overflow-hidden'
+          } ${footerRevealParallaxPx !== 0 ? 'will-change-transform' : ''} ${
+            isPlayground ? 'bg-black' : 'bg-white'
+          } ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
+        >
+          <Routes location={displayLocation}>
+            <Route path="/" element={<WorkRoute onSelectCaseStudy={handleCaseStudySelect} scrollY={scrollY} />} />
+            <Route
+              path="/playground"
+              element={
+                <div className="w-full bg-black overflow-x-hidden">
+                  <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16">
+                    <Playground />
+                  </div>
                 </div>
-              </div>
-            }
-          />
-          <Route
-            path="/about"
-            element={
-              <div className="w-full">
-                <div className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16 pt-32">
-                  <About />
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <div className="w-full">
+                  <div className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16 pt-32">
+                    <About />
+                  </div>
                 </div>
-              </div>
-            }
-          />
-          <Route
-            path="/resume"
-            element={
-              <div className="w-full">
-                <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 pt-32">
-                  <Resume />
+              }
+            />
+            <Route
+              path="/resume"
+              element={
+                <div className="w-full">
+                  <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 pt-32">
+                    <Resume />
+                  </div>
                 </div>
-              </div>
-            }
-          />
-          <Route path="/work/:slug" element={<CaseStudyRoute />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </main>
+              }
+            />
+            <Route path="/work/:slug" element={<CaseStudyRoute />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+      </div>
 
-      <Footer onPageChange={handlePageChange} />
+      {/* Hide during route transition so fixed footer does not sit on screen while main is swapping */}
+      <div
+        className={`transition-opacity duration-300 ease-in-out ${isTransitioning ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
+      >
+        {/* Black runway: scroll distance while the rounded main lifts away; footer stays fixed so its text reads stationary */}
+        <div
+          className="pointer-events-none relative z-0 w-full shrink-0 bg-black"
+          style={{ height: FOOTER_PANEL_HEIGHT_PX }}
+          aria-hidden
+        />
+
+        <Footer onPageChange={handlePageChange} />
+      </div>
     </div>
   );
 };

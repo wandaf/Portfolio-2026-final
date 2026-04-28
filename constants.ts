@@ -1,5 +1,8 @@
 import { CaseStudy, PlaygroundItem } from './types';
 
+/** Fixed footer height and footer-reveal scroll runway (px). Px avoids `vh` changing between routes when the browser chrome resizes after long scroll. */
+export const FOOTER_PANEL_HEIGHT_PX = 560;
+
 /** Restore this object into `CASE_STUDIES` (e.g. replace the Lululemon entry) to bring back The Secret Garden on the grid. */
 export const SECRET_GARDEN_CASE_STUDY: CaseStudy = {
   id: 6,

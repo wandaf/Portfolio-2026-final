@@ -205,7 +205,7 @@ const GridCard: React.FC<{ study: CaseStudy; onClick: () => void }> = ({ study, 
           </div>
         </div>
         <div className="mt-4 px-1">
-          <h4 className="text-[1.75rem] font-semibold text-gray-900 font-serif-heading">
+          <h4 className="text-[1.75rem] font-light tracking-tight text-gray-900 font-['IBM_Plex_Serif']">
             {title.split(':')[0]}
           </h4>
           <p className="text-[15.3px] text-[#949ba6] tracking-widest mt-1 font-mono-tag">
