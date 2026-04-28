@@ -194,10 +194,19 @@ const App: React.FC = () => {
     return inRunway * 0.22;
   }, [scrollY, maxScrollY, isTransitioning, isCaseStudyRoute, isMobileViewport]);
 
-  const mainParallaxStyle =
-    footerRevealParallaxPx !== 0
-      ? ({ transform: `translateY(${footerRevealParallaxPx}px) translateZ(0)` } as const)
-      : undefined;
+  const mainStyle = useMemo(() => {
+    const style: React.CSSProperties = {};
+    if (footerRevealParallaxPx !== 0) {
+      style.transform = `translateY(${footerRevealParallaxPx}px) translateZ(0)`;
+    }
+    if (isCaseStudyRoute) {
+      // Keep sticky sidebar functional (no overflow clipping) while preserving visible rounded bottom corners.
+      const clip = 'inset(0 round 0 0 2.5rem 2.5rem)';
+      style.clipPath = clip;
+      style.WebkitClipPath = clip;
+    }
+    return style;
+  }, [footerRevealParallaxPx, isCaseStudyRoute]);
 
   return (
     <div className="min-h-screen w-full flex flex-col bg-black selection:bg-gray-500 selection:text-white">
@@ -218,7 +227,7 @@ const App: React.FC = () => {
           } ${isTransitioning ? 'opacity-100' : 'opacity-0'}`}
         />
         <main
-          style={mainParallaxStyle}
+          style={mainStyle}
           className={`relative z-10 flex min-h-0 w-full flex-1 rounded-b-[1.75rem] sm:rounded-b-[2rem] md:rounded-b-[2.5rem] transition-opacity duration-300 ease-in-out ${
             isCaseStudyRoute ? 'overflow-visible' : 'overflow-hidden'
           } ${footerRevealParallaxPx !== 0 ? 'will-change-transform' : ''} ${
