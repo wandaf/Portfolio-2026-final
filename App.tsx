@@ -151,6 +151,7 @@ const App: React.FC = () => {
 
   const activePage = useMemo(() => pathToActivePage(location.pathname), [location.pathname]);
   const displayPage = useMemo(() => pathToActivePage(displayLocation.pathname), [displayLocation.pathname]);
+  const isRouteSwitching = location.key !== displayLocation.key;
   /** Destination route while a transition is in flight (`location` updates before `displayLocation`). */
   const targetPage = useMemo(() => pathToActivePage(location.pathname), [location.pathname]);
   /** White crossfade between light pages; black veil when Playground is source or target so we never flash the wrong tone. */
@@ -274,7 +275,9 @@ const App: React.FC = () => {
 
       {/* Hide during route transition so fixed footer does not sit on screen while main is swapping */}
       <div
-        className={`transition-opacity duration-300 ease-in-out ${isTransitioning ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
+        className={`transition-opacity duration-300 ease-in-out ${
+          isTransitioning || isRouteSwitching ? 'pointer-events-none opacity-0' : 'opacity-100'
+        }`}
       >
         {/* Black runway: scroll distance while the rounded main lifts away; footer stays fixed so its text reads stationary */}
         <div
