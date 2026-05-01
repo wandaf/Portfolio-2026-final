@@ -260,10 +260,8 @@ const MCDONALDS_CHANGEABLES_MARQUEE = [4, 5, 6, 7, 8, 9].map(
   (n) => `assets/imgs/Mcdonalds/Project 2/${n}.jpg`
 );
 
-const CHANGEABLES_INTRO_VIDEO_EMBED_SRC_BASE =
-  'https://www.youtube.com/embed/hBRl7qiig6w?si=DKA2lXkreR-4NIMI&modestbranding=1&autoplay=1&mute=1&loop=1&playlist=hBRl7qiig6w&playsinline=1&rel=0';
-const CHANGEABLES_INTRO_VIDEO_EMBED_SRC_NO_CONTROLS = `${CHANGEABLES_INTRO_VIDEO_EMBED_SRC_BASE}&controls=0`;
-const CHANGEABLES_INTRO_VIDEO_EMBED_SRC_WITH_CONTROLS = `${CHANGEABLES_INTRO_VIDEO_EMBED_SRC_BASE}&controls=1`;
+const CHANGEABLES_INTRO_VIDEO_EMBED_SRC =
+  'https://www.youtube.com/embed/hBRl7qiig6w?si=DKA2lXkreR-4NIMI&modestbranding=1&autoplay=1&mute=1&loop=1&playlist=hBRl7qiig6w&playsinline=1&rel=0&controls=0&iv_load_policy=3&disablekb=1';
 
 const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -343,34 +341,41 @@ const ChangeablesSequenceSlideshow: React.FC = () => {
 };
 
 const ChangeablesIntroVideo: React.FC = () => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [canHover, setCanHover] = useState(false);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const mq = window.matchMedia('(hover: hover)');
-    const update = () => setCanHover(mq.matches);
-    update();
-    mq.addEventListener('change', update);
-    return () => mq.removeEventListener('change', update);
-  }, []);
+    if (hasStarted || typeof (window as any).IntersectionObserver === 'undefined') {
+      setHasStarted(true);
+      return;
+    }
 
-  const src = canHover
-    ? isHovered
-      ? CHANGEABLES_INTRO_VIDEO_EMBED_SRC_WITH_CONTROLS
-      : CHANGEABLES_INTRO_VIDEO_EMBED_SRC_NO_CONTROLS
-    : CHANGEABLES_INTRO_VIDEO_EMBED_SRC_WITH_CONTROLS;
+    const node = wrapRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setHasStarted(true);
+          observer.disconnect();
+        }
+      },
+      { root: null, threshold: 0.35, rootMargin: '0px 0px -5% 0px' }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div
+      ref={wrapRef}
       className="relative w-full aspect-video rounded-lg overflow-hidden"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       <iframe
         width="100%"
         height="100%"
-        src={src}
+        src={hasStarted ? CHANGEABLES_INTRO_VIDEO_EMBED_SRC : undefined}
         title="YouTube video player"
         frameBorder={0}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -904,13 +909,13 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                           <iframe
                             width="100%"
                             height="100%"
-                            src="https://www.youtube.com/embed/FyN8XrWWyM8?si=MC_wvr1oqq5HVJsQ&modestbranding=1&autoplay=1&mute=1&loop=1&playlist=FyN8XrWWyM8"
+                            src="https://www.youtube.com/embed/FyN8XrWWyM8?si=MC_wvr1oqq5HVJsQ&modestbranding=1&autoplay=1&mute=1&loop=1&playlist=FyN8XrWWyM8&controls=0&iv_load_policy=3&disablekb=1&playsinline=1&rel=0"
                             title="YouTube video player"
                             frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             referrerPolicy="strict-origin-when-cross-origin"
                             allowFullScreen
-                            className="absolute inset-0 w-full h-full"
+                            className="absolute inset-0 w-full h-full pointer-events-none"
                           />
                         </div>
                         <ResearchDeckCallout />
