@@ -261,7 +261,7 @@ const MCDONALDS_CHANGEABLES_MARQUEE = [4, 5, 6, 7, 8, 9].map(
 );
 
 const CHANGEABLES_INTRO_VIDEO_EMBED_SRC =
-  'https://www.youtube.com/embed/hBRl7qiig6w?si=DKA2lXkreR-4NIMI&modestbranding=1&autoplay=1&mute=1&loop=1&playlist=hBRl7qiig6w&playsinline=1&rel=0&controls=0&iv_load_policy=3&disablekb=1';
+  'https://www.youtube.com/embed/hBRl7qiig6w?autoplay=1&mute=1&loop=1&playlist=hBRl7qiig6w&playsinline=1&rel=0&controls=0&modestbranding=1&iv_load_policy=3&disablekb=1&cc_load_policy=0&fs=0';
 
 const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -381,7 +381,7 @@ const ChangeablesIntroVideo: React.FC = () => {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerPolicy="strict-origin-when-cross-origin"
         allowFullScreen
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 w-full h-full pointer-events-none"
       />
     </div>
   );
@@ -909,7 +909,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                           <iframe
                             width="100%"
                             height="100%"
-                            src="https://www.youtube.com/embed/FyN8XrWWyM8?si=MC_wvr1oqq5HVJsQ&modestbranding=1&autoplay=1&mute=1&loop=1&playlist=FyN8XrWWyM8&controls=0&iv_load_policy=3&disablekb=1&playsinline=1&rel=0"
+                            src="https://www.youtube.com/embed/FyN8XrWWyM8?autoplay=1&mute=1&loop=1&playlist=FyN8XrWWyM8&playsinline=1&rel=0&controls=0&modestbranding=1&iv_load_policy=3&disablekb=1&cc_load_policy=0&fs=0"
                             title="YouTube video player"
                             frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
