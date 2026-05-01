@@ -260,8 +260,10 @@ const MCDONALDS_CHANGEABLES_MARQUEE = [4, 5, 6, 7, 8, 9].map(
   (n) => `assets/imgs/Mcdonalds/Project 2/${n}.jpg`
 );
 
-const CHANGEABLES_INTRO_VIDEO_EMBED_SRC =
-  'https://www.youtube.com/embed/hBRl7qiig6w?si=DKA2lXkreR-4NIMI&modestbranding=1&autoplay=1&mute=1&loop=1&playlist=hBRl7qiig6w';
+const CHANGEABLES_INTRO_VIDEO_EMBED_SRC_BASE =
+  'https://www.youtube.com/embed/hBRl7qiig6w?si=DKA2lXkreR-4NIMI&modestbranding=1&autoplay=1&mute=1&loop=1&playlist=hBRl7qiig6w&playsinline=1&rel=0';
+const CHANGEABLES_INTRO_VIDEO_EMBED_SRC_NO_CONTROLS = `${CHANGEABLES_INTRO_VIDEO_EMBED_SRC_BASE}&controls=0`;
+const CHANGEABLES_INTRO_VIDEO_EMBED_SRC_WITH_CONTROLS = `${CHANGEABLES_INTRO_VIDEO_EMBED_SRC_BASE}&controls=1`;
 
 const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -340,21 +342,45 @@ const ChangeablesSequenceSlideshow: React.FC = () => {
   );
 };
 
-const ChangeablesIntroVideo: React.FC = () => (
-  <div className="relative w-full aspect-video rounded-lg overflow-hidden">
-    <iframe
-      width="100%"
-      height="100%"
-      src={CHANGEABLES_INTRO_VIDEO_EMBED_SRC}
-      title="YouTube video player"
-      frameBorder={0}
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      referrerPolicy="strict-origin-when-cross-origin"
-      allowFullScreen
-      className="absolute inset-0 w-full h-full"
-    />
-  </div>
-);
+const ChangeablesIntroVideo: React.FC = () => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [canHover, setCanHover] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(hover: hover)');
+    const update = () => setCanHover(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+
+  const src = canHover
+    ? isHovered
+      ? CHANGEABLES_INTRO_VIDEO_EMBED_SRC_WITH_CONTROLS
+      : CHANGEABLES_INTRO_VIDEO_EMBED_SRC_NO_CONTROLS
+    : CHANGEABLES_INTRO_VIDEO_EMBED_SRC_WITH_CONTROLS;
+
+  return (
+    <div
+      className="relative w-full aspect-video rounded-lg overflow-hidden"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <iframe
+        width="100%"
+        height="100%"
+        src={src}
+        title="YouTube video player"
+        frameBorder={0}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
+        className="absolute inset-0 w-full h-full"
+      />
+    </div>
+  );
+};
 
 const ChangeablesBackgroundMarquee = React.memo(function ChangeablesBackgroundMarquee() {
   // Static, fast-loading grid (no animation/observers) to avoid iOS rendering issues.
