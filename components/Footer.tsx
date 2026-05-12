@@ -7,10 +7,12 @@ interface FooterProps {
   onPageChange: (page: Page) => void;
 }
 
+const CORNER_BLEED_PX = 44;
+
 const Footer: React.FC<FooterProps> = ({ onPageChange }) => {
   const [time, setTime] = useState('');
   const footerRef = useRef<HTMLElement>(null);
-  const [grainSize, setGrainSize] = useState({ width: 1280, height: FOOTER_PANEL_HEIGHT_PX });
+  const [grainSize, setGrainSize] = useState({ width: 1280, height: FOOTER_PANEL_HEIGHT_PX + CORNER_BLEED_PX });
 
   useEffect(() => {
     const updateTime = () => {
@@ -50,7 +52,7 @@ const Footer: React.FC<FooterProps> = ({ onPageChange }) => {
   return (
     <footer
       ref={footerRef}
-      style={{ height: FOOTER_PANEL_HEIGHT_PX }}
+      style={{ height: FOOTER_PANEL_HEIGHT_PX + CORNER_BLEED_PX, paddingTop: CORNER_BLEED_PX }}
       className="pointer-events-auto fixed inset-x-0 bottom-0 z-[1] flex flex-col overflow-hidden bg-[#0d0707] text-white [transform:translateZ(0)]"
     >
       <div className="pointer-events-none absolute inset-0 z-0">
