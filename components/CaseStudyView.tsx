@@ -97,6 +97,7 @@ const HIGHER_ED_DESKTOP = [
   'assets/imgs/HigherEd/Desktop - 4.jpg',
   'assets/imgs/HigherEd/Desktop - 5.jpg',
 ];
+const HIGHER_ED_ROOSEVELT_SLIDES = [1, 2, 3, 4, 5, 6, 7].map((n) => `assets/HIGHER ED/${n}.jpg`);
 
 const HIGHER_ED_GALLERY_CAPTIONS = [
   {
@@ -118,7 +119,8 @@ const HIGHER_ED_GALLERY_CAPTIONS = [
   },
   {
     title: 'Roosevelt University',
-    description: 'Social media assets emphasizing upward mobility.',
+    description:
+      'Social media assets emphasizing upward mobility, and a campaign concept for Roosevelt’s Schaumburg campus.',
   },
   {
     title: 'Northeastern University',
@@ -138,6 +140,9 @@ const MCDONALDS_GALLERY_GRID_4 = [
 ];
 const MCDONALDS_FULL_WIDTH_1 = 'assets/imgs/Mcdonalds/MDttHhf5aErkP5lFGprSH0tl10.png.webp';
 const MCDONALDS_FULL_WIDTH_2 = 'assets/imgs/Mcdonalds/TsvuOqwvcrGMJKnRGwEf7lARjVk.png.webp';
+/** Filename uses U+202F (narrow no-break space) before "PM". */
+const MCDONALDS_SPECULATIVE_MLB_SCREENSHOT =
+  'assets/imgs/Mcdonalds/Screenshot 2026-05-12 at 11.21.14\u202fPM.png';
 const MCDONALDS_GALLERY_ROW_2 = [
   'assets/imgs/Mcdonalds/fzwbpbdhFVLhAWhcUm6yr2PMog.png.webp',
   'assets/imgs/Mcdonalds/CwHPBomIJykO7JgFCOElWYDbz3c.png.webp',
@@ -294,6 +299,67 @@ const useIsMobile = () => {
   return isMobile;
 };
 
+const HigherEdRooseveltSlideshow: React.FC = () => {
+  const [index, setIndex] = useState(0);
+  const [autoplayEnabled, setAutoplayEnabled] = useState(true);
+
+  useEffect(() => {
+    if (!autoplayEnabled) return;
+    const n = HIGHER_ED_ROOSEVELT_SLIDES.length;
+    const id = window.setInterval(() => {
+      setIndex((i) => (i + 1) % n);
+    }, 3500);
+    return () => window.clearInterval(id);
+  }, [autoplayEnabled]);
+
+  const stopAutoplayAndGo = (delta: number) => {
+    setAutoplayEnabled(false);
+    const n = HIGHER_ED_ROOSEVELT_SLIDES.length;
+    setIndex((i) => (i + delta + n) % n);
+  };
+
+  return (
+    <div className="relative w-full overflow-hidden">
+      <div className="relative aspect-[4/3] w-full max-h-[min(72vh,680px)] sm:aspect-[16/10] sm:max-h-[min(85vh,920px)] md:aspect-[16/9]">
+        {HIGHER_ED_ROOSEVELT_SLIDES.map((src, i) => (
+          <img
+            key={src}
+            src={normalizeAssetSrc(src)}
+            alt={`Roosevelt University campaign ${i + 1}`}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            decoding="async"
+            className={`absolute inset-0 z-0 h-full w-full object-contain object-center transition-opacity duration-500 ease-out ${
+              i === index ? 'z-[1] opacity-100' : 'pointer-events-none opacity-0'
+            }`}
+          />
+        ))}
+        <div className="pointer-events-none absolute inset-0 z-[2] flex items-center justify-between px-1 sm:px-2">
+          <button
+            type="button"
+            onClick={() => stopAutoplayAndGo(-1)}
+            aria-label="Previous slide"
+            className="pointer-events-auto flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-black/[0.06] bg-white/70 text-gray-700 opacity-50 shadow-sm backdrop-blur-sm transition-[opacity,background-color] hover:bg-white/90 hover:opacity-90 focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400 sm:h-12 sm:w-12"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onClick={() => stopAutoplayAndGo(1)}
+            aria-label="Next slide"
+            className="pointer-events-auto flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-black/[0.06] bg-white/70 text-gray-700 opacity-50 shadow-sm backdrop-blur-sm transition-[opacity,background-color] hover:bg-white/90 hover:opacity-90 focus-visible:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400 sm:h-12 sm:w-12"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ChangeablesSequenceSlideshow: React.FC = () => {
   const [index, setIndex] = useState(0);
   const isMobile = useIsMobile();
@@ -447,23 +513,6 @@ const FACELESS_GIFS = [
   'assets/imgs/Faceless Affair/11.gif',
   'assets/imgs/Faceless Affair/12.gif',
 ];
-
-const NdaCallout: React.FC = () => (
-  <div className="rounded-2xl bg-[#e6efff] p-8 md:p-10 max-w-2xl">
-    <p className="text-xl md:text-2xl font-light font-['IBM_Plex_Serif'] text-gray-900 mb-2">
-      This work cannot be publicly shared yet
-    </p>
-    <p className="text-base md:text-lg font-light font-['IBM_Plex_Serif'] text-gray-700 mb-6">
-      Please reach out for more info about my process!
-    </p>
-    <a
-      href="mailto:wandafelsen@gmail.com"
-      className="inline-block px-6 py-3 rounded-xl bg-[#2e2e2e] text-white text-sm font-medium hover:opacity-90 transition-opacity"
-    >
-      Contact
-    </a>
-  </div>
-);
 
 const ResearchDeckCallout: React.FC<{ deckUrl?: string }> = ({ deckUrl = 'https://www.figma.com/deck/7hFmhIFG2ls91PCwOjp4BE/MTA-Research?node-id=2052-43&t=PWkMRcQVca9G6R5P-1' }) => (
   <div className="rounded-2xl bg-[#e0e7ff] p-8 md:p-10 max-w-2xl">
@@ -758,9 +807,22 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                               title={HIGHER_ED_GALLERY_CAPTIONS[4 + i].title}
                               description={HIGHER_ED_GALLERY_CAPTIONS[4 + i].description}
                             />
-                            <div className="relative w-full">
-                              <img src={encodeURI(src)} alt={`Higher ed desktop ${i + 1}`} className="w-full h-auto block" />
-                            </div>
+                            {i === 0 ? (
+                              <div className="space-y-6">
+                                <div className="relative w-full">
+                                  <img
+                                    src={encodeURI(src)}
+                                    alt="Roosevelt University campaign"
+                                    className="block h-auto w-full"
+                                  />
+                                </div>
+                                <HigherEdRooseveltSlideshow />
+                              </div>
+                            ) : (
+                              <div className="relative w-full">
+                                <img src={encodeURI(src)} alt={`Higher ed desktop ${i + 1}`} className="w-full h-auto block" />
+                              </div>
+                            )}
                           </div>
                         ))}
                       </div>
@@ -772,12 +834,9 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                   <section id="overview" className="scroll-mt-40">
                     <FadeInSection>
                       <SectionHeading title="Background" />
-                      <div className="text-gray-600 font-light text-lg leading-relaxed space-y-12">
-                        <p className="max-w-2xl">
-                          I worked as a designer on the McDonald's powerups team at The Marketing Store for 6 months. The digital team focuses on designing mobile games that pair with current Happy Meal toy series. I worked on the UI design, websites, character and background illustrations, QA testing, and animation storyboards for multiple mobile web games. The games I designed for included IPs from anime, McDonald's original characters, and movies.
-                        </p>
-                        <NdaCallout />
-                      </div>
+                      <p className="max-w-2xl text-gray-600 font-light text-lg leading-relaxed">
+                        I worked as a designer on the McDonald's powerups team at The Marketing Store for 6 months. The digital team focuses on designing mobile games that pair with current Happy Meal toy series. I worked on the UI design, websites, character and background illustrations, QA testing, and animation storyboards for multiple mobile web games. The games I designed for included IPs from anime, McDonald's original characters, and movies.
+                      </p>
                     </FadeInSection>
                   </section>
 
@@ -865,6 +924,15 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                               />
                             </div>
                           ))}
+                        </div>
+                        <div className="relative w-full">
+                          <img
+                            src={normalizeAssetSrc(MCDONALDS_SPECULATIVE_MLB_SCREENSHOT)}
+                            alt="Speculative MLB campaign"
+                            loading="lazy"
+                            decoding="async"
+                            className="block h-auto w-full"
+                          />
                         </div>
                         <div className="relative w-full">
                           <img
