@@ -70,12 +70,32 @@ const GlowCard: React.FC<{
 }> = ({ children, className = "", onClick, glowColors }) => {
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [isHovered, setIsHovered] = useState(false);
+  const pendingMouse = useRef({ x: 50, y: 50 });
+  const mouseRaf = useRef<number | null>(null);
+  const isMounted = useRef(true);
+
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      if (mouseRaf.current != null) {
+        window.cancelAnimationFrame(mouseRaf.current);
+        mouseRaf.current = null;
+      }
+      isMounted.current = false;
+    };
+  }, []);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
-    setMousePos({ x, y });
+    pendingMouse.current = { x, y };
+    if (mouseRaf.current != null) return;
+    mouseRaf.current = window.requestAnimationFrame(() => {
+      mouseRaf.current = null;
+      if (!isMounted.current) return;
+      setMousePos(pendingMouse.current);
+    });
   }, []);
 
   return (
@@ -84,7 +104,12 @@ const GlowCard: React.FC<{
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
+        if (mouseRaf.current != null) {
+          window.cancelAnimationFrame(mouseRaf.current);
+          mouseRaf.current = null;
+        }
         setIsHovered(false);
+        pendingMouse.current = { x: 50, y: 50 };
         setMousePos({ x: 50, y: 50 });
       }}
       onClick={onClick}
@@ -104,8 +129,8 @@ const GlowCard: React.FC<{
 
       <style>{`
         @keyframes glow-pulse {
-          0%, 100% { opacity: 0.7; transform: scale(1); filter: blur(32px); }
-          50% { opacity: 0.9; transform: scale(1.05); filter: blur(40px); }
+          0%, 100% { opacity: 0.7; transform: scale(1); }
+          50% { opacity: 0.9; transform: scale(1.05); }
         }
         .animate-glow-pulse {
           animation: glow-pulse 4s ease-in-out infinite;

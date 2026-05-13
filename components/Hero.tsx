@@ -46,7 +46,6 @@ const Hero: React.FC<HeroProps> = ({ scrollY }) => {
   const contentOpacity = Math.max(0, 1 - (scrollY / (vh * 0.7)));
   const scale = 1 + (scrollY / vh * 0.04);
   const translateY = scrollY * 0.25;
-  const blurAmount = (scrollY / vh) * 8;
 
   // Same as App whiteFadeProgress so hero white overlay stays in sync with global transition
   const startFade = 0;
@@ -128,10 +127,9 @@ const Hero: React.FC<HeroProps> = ({ scrollY }) => {
       
       <div 
         className={`max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 w-full will-change-transform text-white relative ${isMounted ? 'is-mounted' : ''}`}
-        style={{ 
+        style={{
           opacity: contentOpacity,
           transform: `scale(${scale}) translateY(${translateY}px)`,
-          filter: `blur(${blurAmount}px)`
         }}
       >
         <div className="max-w-6xl text-left">

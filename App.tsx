@@ -1,5 +1,5 @@
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { CASE_STUDIES, FOOTER_PANEL_HEIGHT_PX } from './constants';
 import { CaseStudy, Page } from './types';
@@ -108,16 +108,44 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const updateScrollMetrics = () => {
-      setScrollY(window.scrollY);
+    const pendingY = { current: 0 };
+    let rafId: number | null = null;
+
+    const measureMaxScroll = () => {
       setMaxScrollY(Math.max(0, document.documentElement.scrollHeight - window.innerHeight));
     };
-    updateScrollMetrics();
-    window.addEventListener('scroll', updateScrollMetrics, { passive: true });
-    window.addEventListener('resize', updateScrollMetrics);
+
+    const flushScrollY = () => {
+      rafId = null;
+      setScrollY(pendingY.current);
+    };
+
+    const onScroll = () => {
+      pendingY.current = window.scrollY;
+      if (rafId == null) {
+        rafId = window.requestAnimationFrame(flushScrollY);
+      }
+    };
+
+    const onResize = () => {
+      if (rafId != null) {
+        window.cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+      pendingY.current = window.scrollY;
+      setScrollY(pendingY.current);
+      measureMaxScroll();
+    };
+
+    pendingY.current = window.scrollY;
+    setScrollY(pendingY.current);
+    measureMaxScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
     return () => {
-      window.removeEventListener('scroll', updateScrollMetrics);
-      window.removeEventListener('resize', updateScrollMetrics);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
+      if (rafId != null) window.cancelAnimationFrame(rafId);
     };
   }, []);
 
