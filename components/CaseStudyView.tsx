@@ -166,6 +166,7 @@ const LULU_PAIR_ROW = [
   'assets/imgs/lulu/4GBLiVlt2w19L6N8oSCx6uxsEyw.png.webp',
   'assets/imgs/lulu/AgEOl46SohWNcHJNt3pzSJQ.png.webp',
 ];
+const LULU_OOH_INTRO_GIF = 'assets/imgs/lulu/Comp10-rev2-ezgif.com-crop.gif';
 
 const LULU_OOH_GAP_PX = 6;
 
@@ -1540,15 +1541,35 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                     <FadeInSection>
                       <div className="space-y-8">
                         {LULU_GALLERY_FULL.map((src, i) => (
-                          <div key={src} className="relative w-full">
-                            <img
-                              src={normalizeAssetSrc(src)}
-                              alt={`Lululemon campaign ${i + 1}`}
-                              loading="lazy"
-                              decoding="async"
-                              className="w-full h-auto block"
-                            />
-                          </div>
+                          <React.Fragment key={src}>
+                            <div className="relative w-full">
+                              <img
+                                src={normalizeAssetSrc(src)}
+                                alt={`Lululemon campaign ${i + 1}`}
+                                loading="lazy"
+                                decoding="async"
+                                className="block h-auto w-full"
+                              />
+                            </div>
+                            {i === 2 && (
+                              <div className="flex w-full justify-center">
+                                <div className="relative inline-block max-w-full">
+                                  <img
+                                    src={normalizeAssetSrc(LULU_OOH_INTRO_GIF)}
+                                    alt="Lululemon campaign motion study"
+                                    loading="lazy"
+                                    decoding="async"
+                                    draggable={false}
+                                    className="relative z-0 block h-auto max-h-[min(85vh,920px)] w-auto max-w-full object-contain"
+                                  />
+                                  <div
+                                    aria-hidden
+                                    className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-20 bg-gradient-to-t from-white to-transparent"
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </React.Fragment>
                         ))}
                         <div className="space-y-4">
                           <div className="max-w-2xl space-y-3">
