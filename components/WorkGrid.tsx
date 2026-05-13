@@ -15,6 +15,49 @@ const normalizeAssetSrc = (src: string) => {
   }
 };
 
+const scrollRevealClass = (isVisible: boolean) =>
+  `transition-[opacity,transform] duration-[260ms] ease-[cubic-bezier(0.22,1,0.36,1)] transform motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:translate-y-0 ${
+    isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
+  }`;
+
+/** One observer for a whole section (e.g. 2×3 grid) — avoids N observers firing during scroll. */
+const ScrollRevealBatch: React.FC<{ children: React.ReactNode; className?: string }> = ({
+  children,
+  className = '',
+}) => {
+  const [isVisible, setVisible] = useState(false);
+  const domRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const bottomPx = Math.min(560, Math.max(240, Math.round(window.innerHeight * 0.52)));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      {
+        threshold: 0,
+        rootMargin: `0px 0px ${bottomPx}px 0px`,
+      }
+    );
+
+    const currentRef = domRef.current;
+    if (currentRef) observer.observe(currentRef);
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={domRef} className={`${className} ${scrollRevealClass(isVisible)}`}>
+      {children}
+    </div>
+  );
+};
+
 const ScrollReveal: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isVisible, setVisible] = useState(false);
   const domRef = useRef<HTMLDivElement>(null);
@@ -28,7 +71,7 @@ const ScrollReveal: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setVisible(true);
-            observer.unobserve(entry.target);
+            observer.disconnect();
           }
         });
       },
@@ -43,20 +86,11 @@ const ScrollReveal: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       observer.observe(currentRef);
     }
 
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <div
-      ref={domRef}
-      className={`transition-[opacity,transform] duration-[260ms] ease-[cubic-bezier(0.22,1,0.36,1)] transform motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:translate-y-0 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
-      }`}
-    >
+    <div ref={domRef} className={scrollRevealClass(isVisible)}>
       {children}
     </div>
   );
@@ -114,28 +148,20 @@ const GlowCard: React.FC<{
       }}
       onClick={onClick}
     >
-      {/* Dynamic Pulsing Gradient Glow */}
-      <div 
-        className={`absolute -inset-4 rounded-[2rem] blur-3xl transition-opacity duration-700 pointer-events-none opacity-0 group-hover:opacity-100 animate-glow-pulse z-0`}
-      
+      {/* Pulsing glow only while hovered — idle cards must not run infinite blur animation (major Chrome jank). */}
+      <div
+        className={`pointer-events-none absolute -inset-4 z-0 rounded-[2rem] blur-3xl transition-opacity duration-300 ${
+          isHovered ? 'opacity-100 animate-work-glow-pulse' : 'opacity-0'
+        }`}
         style={{
-          background: `${isHovered ? `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%, ${glowColors})` : ''}`,
+          background: isHovered ? `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%, ${glowColors})` : undefined,
         }}
+        aria-hidden
       />
-      
-      <div className="relative z-10 transition-all duration-500 ease-out group-hover:scale-[1.015] h-full isolate">
+
+      <div className="relative z-10 h-full isolate transition-transform duration-500 ease-out group-hover:scale-[1.015]">
         {children}
       </div>
-
-      <style>{`
-        @keyframes glow-pulse {
-          0%, 100% { opacity: 0.7; transform: scale(1); }
-          50% { opacity: 0.9; transform: scale(1.05); }
-        }
-        .animate-glow-pulse {
-          animation: glow-pulse 4s ease-in-out infinite;
-        }
-      `}</style>
     </div>
   );
 };
@@ -186,10 +212,15 @@ const FeaturedCard: React.FC<{ study: CaseStudy; reverse?: boolean; onClick: () 
         </div>
 
         <div className="flex-[1.5] w-full aspect-[4/3] bg-gray-100 rounded-xl overflow-hidden shadow-2xl isolate">
-          <img 
-            src={normalizeAssetSrc(study.imageUrl)} 
+          <img
+            src={normalizeAssetSrc(study.imageUrl)}
             alt={title}
-            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+            width={1200}
+            height={900}
+            loading="eager"
+            decoding="async"
+            sizes="(max-width: 768px) 100vw, 800px"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
             style={{ transform: 'translateZ(0)' }}
           />
         </div>
@@ -205,40 +236,55 @@ const GridCard: React.FC<{ study: CaseStudy; onClick: () => void }> = ({ study, 
   const subhead = study.subhead;
 
   return (
-    <GlowCard 
+    <div
+      role="button"
+      tabIndex={0}
       onClick={onClick}
-      glowColors="rgba(59, 130, 246, 0.25), rgba(139, 92, 246, 0.25), transparent"
-      className="h-full"
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick();
+        }
+      }}
+      className="group h-full cursor-pointer rounded-xl outline-none transition-shadow duration-300 hover:shadow-lg focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2"
     >
       <div className="h-full">
-        <div 
-          className="relative overflow-hidden bg-gray-50 aspect-[4/3] rounded-xl shadow-sm isolate"
+        <div
+          className="relative isolate aspect-[4/3] overflow-hidden rounded-xl bg-gray-50 shadow-sm"
           style={{ transform: 'translateZ(0)' }}
         >
-          <img 
-            src={normalizeAssetSrc(study.imageUrl)} 
+          <img
+            src={normalizeAssetSrc(study.imageUrl)}
             alt={title}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            width={800}
+            height={600}
+            loading="lazy"
+            decoding="async"
+            sizes="(max-width: 768px) 100vw, 600px"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
             style={{ transform: 'translateZ(0)' }}
           />
           <div className="absolute top-4 right-4 flex gap-2">
             {tags.map((tag: string) => (
-              <span key={tag} className="bg-white/40 backdrop-blur-md border border-white/20 text-black text-[10px] px-4 py-1.5 font-medium tracking-[0.08em] uppercase rounded-full shadow-sm">
+              <span
+                key={tag}
+                className="rounded-full border border-white/30 bg-white/90 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.08em] text-black shadow-sm"
+              >
                 {tag}
               </span>
             ))}
           </div>
         </div>
         <div className="mt-4 px-1">
-          <h4 className="text-[1.75rem] font-light tracking-tight text-gray-900 font-['IBM_Plex_Serif']">
+          <h4 className="font-['IBM_Plex_Serif'] text-[1.75rem] font-light tracking-tight text-gray-900">
             {title.split(':')[0]}
           </h4>
-          <p className="text-[15.3px] text-[#949ba6] tracking-normal mt-1 font-light">
+          <p className="mt-1 text-[15.3px] font-light tracking-normal text-[#949ba6]">
             {subhead || tags.join(', ')}
           </p>
         </div>
       </div>
-    </GlowCard>
+    </div>
   );
 };
 
@@ -266,13 +312,19 @@ const WorkGrid: React.FC<WorkGridProps> = ({ onSelectCaseStudy }) => {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16 mt-16">
-        {gridItems.map((study, idx) => (
-          <ScrollReveal key={study.id || idx}>
-            <GridCard study={study} onClick={() => study.externalUrl ? window.open(study.externalUrl, '_blank', 'noopener,noreferrer') : onSelectCaseStudy(study)} />
-          </ScrollReveal>
-        ))}
-      </div>
+      <ScrollRevealBatch className="mt-16">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-16 md:grid-cols-2">
+          {gridItems.map((study, idx) => (
+            <GridCard
+              key={study.id || idx}
+              study={study}
+              onClick={() =>
+                study.externalUrl ? window.open(study.externalUrl, '_blank', 'noopener,noreferrer') : onSelectCaseStudy(study)
+              }
+            />
+          ))}
+        </div>
+      </ScrollRevealBatch>
 
       {lastItem && (
         <div className="mt-12 md:mt-24 w-full aspect-[16/10] md:aspect-video bg-black overflow-hidden rounded-2xl relative border-2 border-gray-100 group">
@@ -297,13 +349,19 @@ const WorkGrid: React.FC<WorkGridProps> = ({ onSelectCaseStudy }) => {
             allowFullScreen
           /> */}
       {remaining.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16 mt-16">
-          {remaining.map((study, idx) => (
-            <ScrollReveal key={study.id || idx}>
-              <GridCard study={study} onClick={() => study.externalUrl ? window.open(study.externalUrl, '_blank', 'noopener,noreferrer') : onSelectCaseStudy(study)} />
-            </ScrollReveal>
-          ))}
-        </div>
+        <ScrollRevealBatch className="mt-16">
+          <div className="grid grid-cols-1 gap-x-8 gap-y-16 md:grid-cols-2">
+            {remaining.map((study, idx) => (
+              <GridCard
+                key={study.id || idx}
+                study={study}
+                onClick={() =>
+                  study.externalUrl ? window.open(study.externalUrl, '_blank', 'noopener,noreferrer') : onSelectCaseStudy(study)
+                }
+              />
+            ))}
+          </div>
+        </ScrollRevealBatch>
       )}
     </div>
   );

@@ -47,7 +47,14 @@
         transform: translateY(0);
       }
 
-      
+      /* Work grid featured hover glow — class toggled only while hovered (no idle animation). */
+      @keyframes work-glow-pulse {
+        0%, 100% { opacity: 0.7; transform: scale(1); }
+        50% { opacity: 0.9; transform: scale(1.05); }
+      }
+      .animate-work-glow-pulse {
+        animation: work-glow-pulse 4s ease-in-out infinite;
+      }
     </style>
 <script type="importmap">
 {
