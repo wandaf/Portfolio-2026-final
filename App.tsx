@@ -1,5 +1,5 @@
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { CASE_STUDIES, FOOTER_PANEL_HEIGHT_PX } from './constants';
 import { CaseStudy, Page } from './types';
@@ -69,8 +69,6 @@ const App: React.FC = () => {
 
   const [displayLocation, setDisplayLocation] = useState(location);
   const [scrollY, setScrollY] = useState(0);
-  const [maxScrollY, setMaxScrollY] = useState(0);
-  const [isMobileViewport, setIsMobileViewport] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Animate document title as a subtle marquee
@@ -100,20 +98,8 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const media = window.matchMedia('(max-width: 767px)');
-    const updateIsMobile = () => setIsMobileViewport(media.matches);
-    updateIsMobile();
-    media.addEventListener('change', updateIsMobile);
-    return () => media.removeEventListener('change', updateIsMobile);
-  }, []);
-
-  useEffect(() => {
     const pendingY = { current: 0 };
     let rafId: number | null = null;
-
-    const measureMaxScroll = () => {
-      setMaxScrollY(Math.max(0, document.documentElement.scrollHeight - window.innerHeight));
-    };
 
     const flushScrollY = () => {
       rafId = null;
@@ -134,12 +120,10 @@ const App: React.FC = () => {
       }
       pendingY.current = window.scrollY;
       setScrollY(pendingY.current);
-      measureMaxScroll();
     };
 
     pendingY.current = window.scrollY;
     setScrollY(pendingY.current);
-    measureMaxScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
     return () => {
@@ -162,20 +146,13 @@ const App: React.FC = () => {
     }
   }, [location, displayLocation.key]);
 
-  useEffect(() => {
-    const id = requestAnimationFrame(() => {
-      setMaxScrollY(Math.max(0, document.documentElement.scrollHeight - window.innerHeight));
-    });
-    return () => cancelAnimationFrame(id);
-  }, [displayLocation.pathname, isTransitioning]);
-
-  const handleCaseStudySelect = (study: CaseStudy) => {
+  const handleCaseStudySelect = useCallback((study: CaseStudy) => {
     navigate(`/work/${study.slug}`);
-  };
+  }, [navigate]);
 
-  const handlePageChange = (page: Page) => {
+  const handlePageChange = useCallback((page: Page) => {
     navigate(pageToPath(page));
-  };
+  }, [navigate]);
 
   const activePage = useMemo(() => pathToActivePage(location.pathname), [location.pathname]);
   const displayPage = useMemo(() => pathToActivePage(displayLocation.pathname), [displayLocation.pathname]);
@@ -207,27 +184,15 @@ const App: React.FC = () => {
     if (displayPage === Page.ABOUT || displayPage === Page.RESUME) return false;
     if (displayPage === Page.WORK) return darkProgress > 0.5;
     return false;
-  }, [scrollY, displayPage, darkProgress]);
+  }, [displayPage, darkProgress]);
 
   const isPlayground = displayPage === Page.PLAYGROUND;
 
   /** `/work/:slug` case studies use `position: sticky` in the layout; any `transform` on an ancestor breaks it. */
   const isCaseStudyRoute = /^\/work\/[^/]+$/.test(displayLocation.pathname);
 
-  // During the final scroll segment, ease the main layer upward slightly slower than the scroll
-  // so the fixed footer feels more "stationary" while the white sheet lifts away.
-  const footerRevealParallaxPx = useMemo(() => {
-    if (isTransitioning || isCaseStudyRoute || isMobileViewport) return 0;
-    const runwayStart = Math.max(0, maxScrollY - FOOTER_PANEL_HEIGHT_PX);
-    const inRunway = Math.max(0, scrollY - runwayStart);
-    return inRunway * 0.22;
-  }, [scrollY, maxScrollY, isTransitioning, isCaseStudyRoute, isMobileViewport]);
-
   const mainStyle = useMemo(() => {
     const style: React.CSSProperties = {};
-    if (footerRevealParallaxPx !== 0) {
-      style.transform = `translateY(${footerRevealParallaxPx}px) translateZ(0)`;
-    }
     if (isCaseStudyRoute) {
       // Keep sticky sidebar functional (no overflow clipping) while preserving visible rounded bottom corners.
       const clip = 'inset(0 round 0 0 2.5rem 2.5rem)';
@@ -235,7 +200,7 @@ const App: React.FC = () => {
       style.WebkitClipPath = clip;
     }
     return style;
-  }, [footerRevealParallaxPx, isCaseStudyRoute]);
+  }, [isCaseStudyRoute]);
 
   return (
     <div className="min-h-screen w-full flex flex-col bg-black selection:bg-gray-500 selection:text-white">
@@ -259,9 +224,7 @@ const App: React.FC = () => {
           style={mainStyle}
           className={`relative z-10 flex min-h-0 w-full flex-1 rounded-b-[1.75rem] sm:rounded-b-[2rem] md:rounded-b-[2.5rem] transition-opacity duration-300 ease-in-out ${
             isCaseStudyRoute ? 'overflow-visible' : 'overflow-hidden'
-          } ${footerRevealParallaxPx !== 0 ? 'will-change-transform' : ''} ${
-            isPlayground ? 'bg-black' : 'bg-white'
-          } ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
+          } ${isPlayground ? 'bg-black' : 'bg-white'} ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
         >
           <Routes location={displayLocation}>
             <Route path="/" element={<WorkRoute onSelectCaseStudy={handleCaseStudySelect} scrollY={scrollY} />} />

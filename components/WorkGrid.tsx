@@ -288,7 +288,7 @@ const GridCard: React.FC<{ study: CaseStudy; onClick: () => void }> = ({ study, 
   );
 };
 
-const WorkGrid: React.FC<WorkGridProps> = ({ onSelectCaseStudy }) => {
+const WorkGrid = React.memo(function WorkGrid({ onSelectCaseStudy }: WorkGridProps) {
   const studies = Array.isArray(CASE_STUDIES) ? CASE_STUDIES : [];
   
   if (studies.length === 0) return <div className="py-20 text-center text-gray-400">No projects to display.</div>;
@@ -365,6 +365,6 @@ const WorkGrid: React.FC<WorkGridProps> = ({ onSelectCaseStudy }) => {
       )}
     </div>
   );
-};
+});
 
 export default WorkGrid;
