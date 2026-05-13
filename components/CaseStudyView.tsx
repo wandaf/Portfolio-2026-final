@@ -142,6 +142,8 @@ const MCDONALDS_GALLERY_ROW_2 = [
   'assets/imgs/Mcdonalds/fzwbpbdhFVLhAWhcUm6yr2PMog.png.webp',
   'assets/imgs/Mcdonalds/CwHPBomIJykO7JgFCOElWYDbz3c.png.webp',
 ];
+const MCDONALDS_ANIME_UNO_INTRO_GIF = 'assets/imgs/Mcdonalds/Demo_AnimexUno_Intro_v001-2-ezgif.com-resize.gif';
+const MCDONALDS_ANIME_UNO_STILL = 'assets/imgs/Mcdonalds/uno.png';
 
 const LULU_HERO = 'assets/imgs/lulu/kYZRTpDanLNfZKlx5CrQG4EF4s.png.webp';
 const LULU_GALLERY_FULL = [
@@ -503,6 +505,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
     ? [
         { id: 'overview', label: 'Background' },
         { id: 'changeables', label: 'Changeables' },
+        { id: 'anime-uno', label: 'Anime x Uno' },
         { id: 'speculative', label: 'Speculative MLB' },
         { id: 'final', label: 'Final Thoughts' },
       ]
@@ -803,6 +806,39 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                       </div>
                     </FadeInSection>
                     <ChangeablesBackgroundMarquee />
+                  </section>
+
+                  <section id="anime-uno" className="scroll-mt-40">
+                    <FadeInSection>
+                      <SectionHeading title="Anime x Uno" />
+                      <div>
+                        <p className="mb-10 text-gray-600 font-light text-lg leading-relaxed max-w-2xl">
+                          This project was a Happy Meal collaboration between Uno and four anime properties. For this project, in addition to designing UX screens, I storyboarded the intro video for a digital game of Uno where the player can battle against characters from Naruto, SpyxFamily, Boruto, and My Hero Academia. The challenge was to make sure McDonald&apos;s, the anime properties, and Uno were all equally represented. I came up with the idea of a flying Uno card guiding the motion design and using colorful slices to differentiate the animes and characters.
+                        </p>
+                        <div className="flex w-full flex-row flex-nowrap items-center gap-2">
+                          <div className="min-w-0 flex-1">
+                            <img
+                              src={normalizeAssetSrc(MCDONALDS_ANIME_UNO_STILL)}
+                              alt="Anime x Uno storyboard still"
+                              loading="lazy"
+                              decoding="async"
+                              draggable={false}
+                              className="block h-auto w-full max-w-full object-contain object-center"
+                            />
+                          </div>
+                          <div className="w-[26%] shrink-0 basis-[26%] min-w-0 sm:w-[25.53%] sm:basis-[25.53%]">
+                            <img
+                              src={normalizeAssetSrc(MCDONALDS_ANIME_UNO_INTRO_GIF)}
+                              alt="Anime x Uno intro storyboard animation"
+                              loading="lazy"
+                              decoding="async"
+                              draggable={false}
+                              className="block h-auto w-full object-contain object-center"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </FadeInSection>
                   </section>
 
                   <section id="speculative" className="scroll-mt-40">
