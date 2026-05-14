@@ -163,11 +163,12 @@ const App: React.FC = () => {
   const transitionVeilLight =
     displayPage !== Page.PLAYGROUND && targetPage !== Page.PLAYGROUND;
 
-  // Gradient → white: 0 = only gradient visible, 1 = white overlay fully visible (for nav/branding and transition)
+  // Gradient → white: 0 = only gradient visible, 1 = white overlay fully visible (for nav/branding and transition).
+  // Keep startFade in sync with `Hero.tsx` (startFade = 0) so nav text doesn’t lag the hero white wash.
   const whiteFadeProgress = useMemo(() => {
     if (displayPage !== Page.WORK) return 1;
     const vh = typeof window !== 'undefined' ? window.innerHeight : 800;
-    const startFade = vh * 0.22;
+    const startFade = 0;
     const endFade = vh * 0.9;
     if (scrollY <= startFade) return 0;
     if (scrollY >= endFade) return 1;
@@ -182,7 +183,7 @@ const App: React.FC = () => {
   const isDarkMode = useMemo(() => {
     if (displayPage === Page.PLAYGROUND) return true;
     if (displayPage === Page.ABOUT || displayPage === Page.RESUME) return false;
-    if (displayPage === Page.WORK) return darkProgress > 0.5;
+    if (displayPage === Page.WORK) return darkProgress > 0.56;
     return false;
   }, [displayPage, darkProgress]);
 
