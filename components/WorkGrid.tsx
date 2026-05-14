@@ -124,7 +124,7 @@ const GridCard: React.FC<{ study: CaseStudy; onClick: () => void }> = ({ study, 
             {tags.map((tag: string) => (
               <span
                 key={tag}
-                className="rounded-full bg-white/70 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.08em] text-black backdrop-blur-xl"
+                className="rounded-full bg-white/85 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.08em] text-black backdrop-blur-xl"
               >
                 {tag}
               </span>
