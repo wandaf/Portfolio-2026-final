@@ -124,7 +124,7 @@ const GridCard: React.FC<{ study: CaseStudy; onClick: () => void }> = ({ study, 
             {tags.map((tag: string) => (
               <span
                 key={tag}
-                className="rounded-full border border-white/30 bg-white/90 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.08em] text-black shadow-sm"
+                className="rounded-full bg-white/70 px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.08em] text-black backdrop-blur-xl"
               >
                 {tag}
               </span>
@@ -176,10 +176,10 @@ const WorkGrid = React.memo(function WorkGrid({ onSelectCaseStudy }: WorkGridPro
               role="tab"
               aria-selected={selected}
               onClick={() => setActiveFilter(tab.id)}
-              className={`rounded-full border px-4 py-2 text-[11px] font-medium uppercase tracking-[0.14em] transition-colors md:px-5 md:py-2.5 md:text-xs ${
+              className={`rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.14em] transition-colors md:px-5 md:py-2.5 md:text-xs ${
                 selected
-                  ? 'border-gray-900 bg-gray-900 text-white'
-                  : 'border-gray-200 bg-transparent text-gray-500 hover:border-gray-300 hover:text-gray-800'
+                  ? 'bg-gray-900 text-white'
+                  : 'bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-500'
               }`}
             >
               {tab.label}
