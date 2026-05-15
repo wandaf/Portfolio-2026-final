@@ -9,6 +9,13 @@ interface FooterProps {
 
 const CORNER_BLEED_PX = 44;
 
+const footerLinkClass =
+  'footer-link text-[11px] font-medium uppercase tracking-[0.2em] text-white transition-opacity duration-200 ease-out md:text-xs';
+
+/** Same hover pattern as dark-mode nav: hovered link full white, siblings dim. */
+const footerNavHover =
+  '[&:has(.footer-link:hover)_.footer-link]:opacity-60 [&:has(.footer-link:hover)_.footer-link:hover]:!opacity-100';
+
 const Footer: React.FC<FooterProps> = ({ onPageChange }) => {
   const [time, setTime] = useState('');
   const footerRef = useRef<HTMLElement>(null);
@@ -98,32 +105,32 @@ const Footer: React.FC<FooterProps> = ({ onPageChange }) => {
           <div className="flex flex-wrap gap-10 sm:gap-16 md:gap-24 lg:gap-32">
             <div>
               <p className="mb-6 font-mono-tag text-[10px] uppercase tracking-[0.2em] text-white/50">Navigation</p>
-              <nav className="flex flex-col gap-4">
+              <nav className={`flex flex-col gap-4 ${footerNavHover}`}>
                 <button
                   type="button"
                   onClick={() => handleNav(Page.WORK)}
-                  className="text-left text-[11px] font-medium uppercase tracking-[0.2em] text-white transition-opacity hover:opacity-60 md:text-xs"
+                  className={`text-left ${footerLinkClass}`}
                 >
                   Work
                 </button>
                 <button
                   type="button"
                   onClick={() => handleNav(Page.PLAYGROUND)}
-                  className="text-left text-[11px] font-medium uppercase tracking-[0.2em] text-white transition-opacity hover:opacity-60 md:text-xs"
+                  className={`text-left ${footerLinkClass}`}
                 >
                   Playground
                 </button>
                 <button
                   type="button"
                   onClick={() => handleNav(Page.ABOUT)}
-                  className="text-left text-[11px] font-medium uppercase tracking-[0.2em] text-white transition-opacity hover:opacity-60 md:text-xs"
+                  className={`text-left ${footerLinkClass}`}
                 >
                   About
                 </button>
                 <button
                   type="button"
                   onClick={() => handleNav(Page.RESUME)}
-                  className="text-left text-[11px] font-medium uppercase tracking-[0.2em] text-white transition-opacity hover:opacity-60 md:text-xs"
+                  className={`text-left ${footerLinkClass}`}
                 >
                   Resume
                 </button>
@@ -131,18 +138,15 @@ const Footer: React.FC<FooterProps> = ({ onPageChange }) => {
             </div>
             <div>
               <p className="mb-6 font-mono-tag text-[10px] uppercase tracking-[0.2em] text-white/50">Links</p>
-              <nav className="flex flex-col gap-4">
-                <a
-                  href="mailto:wandafelsen@gmail.com"
-                  className="text-[11px] font-medium uppercase tracking-[0.2em] text-white transition-opacity hover:opacity-60 md:text-xs"
-                >
+              <nav className={`flex flex-col gap-4 ${footerNavHover}`}>
+                <a href="mailto:wandafelsen@gmail.com" className={footerLinkClass}>
                   Email
                 </a>
                 <a
                   href="https://www.linkedin.com/in/wanda-f/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[11px] font-medium uppercase tracking-[0.2em] text-white transition-opacity hover:opacity-60 md:text-xs"
+                  className={footerLinkClass}
                 >
                   LinkedIn
                 </a>
