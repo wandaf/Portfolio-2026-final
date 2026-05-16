@@ -120,7 +120,7 @@ const HIGHER_ED_GALLERY_CAPTIONS = [
   {
     title: 'Roosevelt University',
     description:
-      'Social media assets emphasizing upward mobility, and a campaign concept for Roosevelt’s Schaumburg campus.',
+      'Digital campaign concept and omnichannel campaign for Roosevelt’s Schaumburg campus.',
   },
   {
     title: 'Northeastern University',
@@ -756,6 +756,18 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                       <SectionHeading title="Gallery" />
                       <div className="space-y-8">
                         <GalleryBlockHeading
+                          title={HIGHER_ED_GALLERY_CAPTIONS[4].title}
+                          description={HIGHER_ED_GALLERY_CAPTIONS[4].description}
+                        />
+                        <HigherEdRooseveltSlideshow />
+                        <div className="relative w-full">
+                          <img
+                            src={encodeURI(HIGHER_ED_DESKTOP[0])}
+                            alt="Roosevelt University campaign"
+                            className="block h-auto w-full"
+                          />
+                        </div>
+                        <GalleryBlockHeading
                           title={HIGHER_ED_GALLERY_CAPTIONS[0].title}
                           description={HIGHER_ED_GALLERY_CAPTIONS[0].description}
                         />
@@ -802,28 +814,15 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                             </div>
                           ))}
                         </div>
-                        {HIGHER_ED_DESKTOP.map((src, i) => (
-                          <div key={i}>
+                        {HIGHER_ED_DESKTOP.slice(1).map((src, i) => (
+                          <div key={src}>
                             <GalleryBlockHeading
-                              title={HIGHER_ED_GALLERY_CAPTIONS[4 + i].title}
-                              description={HIGHER_ED_GALLERY_CAPTIONS[4 + i].description}
+                              title={HIGHER_ED_GALLERY_CAPTIONS[5 + i].title}
+                              description={HIGHER_ED_GALLERY_CAPTIONS[5 + i].description}
                             />
-                            {i === 0 ? (
-                              <div className="space-y-6">
-                                <div className="relative w-full">
-                                  <img
-                                    src={encodeURI(src)}
-                                    alt="Roosevelt University campaign"
-                                    className="block h-auto w-full"
-                                  />
-                                </div>
-                                <HigherEdRooseveltSlideshow />
-                              </div>
-                            ) : (
-                              <div className="relative w-full">
-                                <img src={encodeURI(src)} alt={`Higher ed desktop ${i + 1}`} className="w-full h-auto block" />
-                              </div>
-                            )}
+                            <div className="relative w-full">
+                              <img src={encodeURI(src)} alt={`Higher ed desktop ${i + 1}`} className="w-full h-auto block" />
+                            </div>
                           </div>
                         ))}
                       </div>
