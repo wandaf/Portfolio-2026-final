@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { PLAYGROUND_ITEMS } from '../constants';
 import Sketchbook from './Sketchbook';
+import { publicAsset } from '../utils/publicAsset';
 
 const FULL_SPAN_IDS = [5, 13, 15];
 
@@ -57,7 +58,7 @@ const PlaygroundItemCard: React.FC<{ item: any; index: number; fullSpan?: boolea
         ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
     >
       <img
-        src={item.imageUrl}
+        src={publicAsset(item.imageUrl)}
         alt={item.title}
         loading="lazy"
         className="w-full h-auto max-h-[70vh] object-contain rounded-lg"

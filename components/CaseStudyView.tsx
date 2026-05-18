@@ -1,18 +1,11 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CaseStudy } from '../types';
+import { publicAsset, publicHref } from '../utils/publicAsset';
 
 interface CaseStudyViewProps {
   study: CaseStudy;
 }
-
-const normalizeAssetSrc = (src: string) => {
-  try {
-    return encodeURI(decodeURI(src));
-  } catch {
-    return encodeURI(src);
-  }
-};
 
 const FadeInSection: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = "" }) => {
   const domRef = useRef<HTMLDivElement>(null);
@@ -243,7 +236,7 @@ const LululemonOohPair: React.FC = () => {
         <img
           key={src}
           ref={i === 0 ? imgRef0 : imgRef1}
-          src={normalizeAssetSrc(src)}
+          src={publicAsset(src)}
           alt={`Lululemon campaign OOH ${i + 1}`}
           loading="eager"
           decoding="async"
@@ -325,7 +318,7 @@ const HigherEdRooseveltSlideshow: React.FC = () => {
         {HIGHER_ED_ROOSEVELT_SLIDES.map((src, i) => (
           <img
             key={src}
-            src={normalizeAssetSrc(src)}
+            src={publicAsset(src)}
             alt={`Roosevelt University campaign ${i + 1}`}
             loading={i === 0 ? 'eager' : 'lazy'}
             decoding="async"
@@ -380,7 +373,7 @@ const ChangeablesSequenceSlideshow: React.FC = () => {
           {MCDONALDS_CHANGEABLES_SEQUENCE.map((src, i) => (
             <div key={src} className="relative w-full">
               <img
-                src={normalizeAssetSrc(src)}
+                src={publicAsset(src)}
                 alt={`Changeables storyboard ${i + 1}`}
                 loading="lazy"
                 decoding="async"
@@ -394,7 +387,7 @@ const ChangeablesSequenceSlideshow: React.FC = () => {
           {MCDONALDS_CHANGEABLES_SEQUENCE.map((src, i) => (
             <img
               key={src}
-              src={normalizeAssetSrc(src)}
+              src={publicAsset(src)}
               alt={`Changeables storyboard ${i + 1}`}
               loading="lazy"
               decoding="async"
@@ -464,7 +457,7 @@ const ChangeablesBackgroundMarquee = React.memo(function ChangeablesBackgroundMa
         {MCDONALDS_CHANGEABLES_MARQUEE.map((src, i) => (
           <div key={src} className="relative w-full overflow-hidden rounded-lg bg-gray-50 aspect-[16/9]">
             <img
-              src={normalizeAssetSrc(src)}
+              src={publicAsset(src)}
               alt={`Changeables environment ${i + 1}`}
               loading="lazy"
               decoding="async"
@@ -515,7 +508,27 @@ const FACELESS_GIFS = [
   'assets/imgs/Faceless Affair/12.gif',
 ];
 
-const ResearchDeckCallout: React.FC<{ deckUrl?: string }> = ({ deckUrl = 'https://www.figma.com/deck/7hFmhIFG2ls91PCwOjp4BE/MTA-Research?node-id=2052-43&t=PWkMRcQVca9G6R5P-1' }) => (
+const MtaExperienceCallout: React.FC<{ href?: string }> = ({ href = publicHref('mta-transit') }) => (
+  <div className="rounded-2xl bg-[#e0e7ff] p-8 md:p-10 max-w-2xl">
+    <p className="text-xl md:text-2xl font-light font-['IBM_Plex_Serif'] text-gray-900 mb-2">
+      Explore the experience
+    </p>
+    <p className="text-base md:text-lg font-light text-gray-700 mb-6">
+      Interact with the full data visualization—filter by temperature, weather, and transit mode to see how
+      ridership patterns shift across 2023.
+    </p>
+    <a
+      href={href}
+      className="inline-block rounded-xl bg-[#212529] px-6 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90"
+    >
+      View live visualization
+    </a>
+  </div>
+);
+
+const ResearchDeckCallout: React.FC<{ deckUrl?: string }> = ({
+  deckUrl = 'https://www.figma.com/deck/7hFmhIFG2ls91PCwOjp4BE/MTA-Research?node-id=2052-43&t=PWkMRcQVca9G6R5P-1',
+}) => (
   <div className="rounded-2xl bg-[#e0e7ff] p-8 md:p-10 max-w-2xl">
     <p className="text-xl md:text-2xl font-light font-['IBM_Plex_Serif'] text-gray-900 mb-2">
       Interested in learning more about my process?
@@ -657,7 +670,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
       {/* 1. Impact Hero Image */}
       <div className="w-full h-[52vh] md:h-[59vh] relative overflow-hidden bg-black flex items-center justify-center">
         <img 
-          src={normalizeAssetSrc(
+          src={publicAsset(
             isMcdonalds
               ? 'assets/imgs/Mcdonalds/ld4tdsEQzQw9aIQj47eO0ZamxY (1).avif'
               : isMTA
@@ -877,7 +890,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                         <div className="flex w-full flex-row flex-nowrap items-center gap-2">
                           <div className="min-w-0 flex-1">
                             <img
-                              src={normalizeAssetSrc(MCDONALDS_ANIME_UNO_STILL)}
+                              src={publicAsset(MCDONALDS_ANIME_UNO_STILL)}
                               alt="Anime x Uno storyboard still"
                               loading="lazy"
                               decoding="async"
@@ -887,7 +900,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                           </div>
                           <div className="w-[26%] shrink-0 basis-[26%] min-w-0 sm:w-[25.53%] sm:basis-[25.53%]">
                             <img
-                              src={normalizeAssetSrc(MCDONALDS_ANIME_UNO_INTRO_GIF)}
+                              src={publicAsset(MCDONALDS_ANIME_UNO_INTRO_GIF)}
                               alt="Anime x Uno intro storyboard animation"
                               loading="lazy"
                               decoding="async"
@@ -916,7 +929,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                           {MCDONALDS_GALLERY_GRID_4.map((src, i) => (
                             <div key={i} className="relative overflow-hidden aspect-[4/3]">
                               <img
-                                src={normalizeAssetSrc(src)}
+                                src={publicAsset(src)}
                                 alt={`McDonald's project ${i + 1}`}
                                 loading="lazy"
                                 decoding="async"
@@ -927,7 +940,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                         </div>
                         <div className="relative w-full">
                           <img
-                            src={normalizeAssetSrc(MCDONALDS_SPECULATIVE_MLB_SCREENSHOT)}
+                            src={publicAsset(MCDONALDS_SPECULATIVE_MLB_SCREENSHOT)}
                             alt="Speculative MLB campaign"
                             loading="lazy"
                             decoding="async"
@@ -936,7 +949,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                         </div>
                         <div className="relative w-full">
                           <img
-                            src={normalizeAssetSrc(MCDONALDS_FULL_WIDTH_1)}
+                            src={publicAsset(MCDONALDS_FULL_WIDTH_1)}
                             alt="McDonald's project"
                             loading="lazy"
                             decoding="async"
@@ -945,7 +958,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                         </div>
                         <div className="relative w-full">
                           <img
-                            src={normalizeAssetSrc(MCDONALDS_FULL_WIDTH_2)}
+                            src={publicAsset(MCDONALDS_FULL_WIDTH_2)}
                             alt="McDonald's project"
                             loading="lazy"
                             decoding="async"
@@ -955,7 +968,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                         {MCDONALDS_GALLERY_ROW_2.map((src, i) => (
                           <div key={i} className="relative w-full">
                             <img
-                              src={normalizeAssetSrc(src)}
+                              src={publicAsset(src)}
                               alt={`McDonald's project ${i + 5}`}
                               loading="lazy"
                               decoding="async"
@@ -985,7 +998,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                         The MTA publishes open source data on their website on a variety of topics. I wanted to challenge myself to create a data visualization of their user ridership data. I decided to combine this data set with publicly-available weather data.
                       </p>
                       <div className="mt-8">
-                        <ResearchDeckCallout />
+                        <MtaExperienceCallout />
                       </div>
                     </FadeInSection>
                   </section>
@@ -1097,7 +1110,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                           I was inspired by the use of illustration to convey concepts such as problem-solving and collaboration while conveying friendliness. I gathered imspiration in a moodboard.
                         </p>
                         <div className="relative w-full">
-                          <img src={normalizeAssetSrc('assets/imgs/Viv Brand/Moodboard.png')} alt="Viv Brand moodboard" className="w-full h-auto block" />
+                          <img src={publicAsset('assets/imgs/Viv Brand/Moodboard.png')} alt="Viv Brand moodboard" className="w-full h-auto block" />
                         </div>
                       </div>
                     </FadeInSection>
@@ -1111,22 +1124,22 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                           To pair with the illustrations, I used a friendly and approachable serif font combined with hand drawn elements such as lines and notations.
                         </p>
                         <div className="relative w-full">
-                          <img src={normalizeAssetSrc('assets/imgs/Viv Brand/Viv_Concept_Doc_Master_006.jpg')} alt="Viv concept visual 006" className="w-full h-auto block" />
+                          <img src={publicAsset('assets/imgs/Viv Brand/Viv_Concept_Doc_Master_006.jpg')} alt="Viv concept visual 006" className="w-full h-auto block" />
                         </div>
                         <div className="relative w-full">
-                          <img src={normalizeAssetSrc('assets/imgs/Viv Brand/Viv_Concept_Doc_Master_007.jpg')} alt="Viv concept visual 007" className="w-full h-auto block" />
+                          <img src={publicAsset('assets/imgs/Viv Brand/Viv_Concept_Doc_Master_007.jpg')} alt="Viv concept visual 007" className="w-full h-auto block" />
                         </div>
                         <div className="relative w-full">
-                          <img src={normalizeAssetSrc('assets/imgs/Viv Brand/Viv_Concept_Doc_Master_008.jpg')} alt="Viv concept visual 008" className="w-full h-auto block" />
+                          <img src={publicAsset('assets/imgs/Viv Brand/Viv_Concept_Doc_Master_008.jpg')} alt="Viv concept visual 008" className="w-full h-auto block" />
                         </div>
                         <div className="relative w-full">
-                          <img src={normalizeAssetSrc('assets/imgs/Viv Brand/Artboard 4-100.jpg')} alt="Viv typography and logo explorations artboard 4" className="w-full h-auto block" />
+                          <img src={publicAsset('assets/imgs/Viv Brand/Artboard 4-100.jpg')} alt="Viv typography and logo explorations artboard 4" className="w-full h-auto block" />
                         </div>
                         <div className="relative w-full">
-                          <img src={normalizeAssetSrc('assets/imgs/Viv Brand/Artboard 3-100.jpg')} alt="Viv typography and logo explorations artboard 3" className="w-full h-auto block" />
+                          <img src={publicAsset('assets/imgs/Viv Brand/Artboard 3-100.jpg')} alt="Viv typography and logo explorations artboard 3" className="w-full h-auto block" />
                         </div>
                         <div className="relative w-full">
-                          <img src={normalizeAssetSrc('assets/imgs/Viv Brand/Artboard 6-100.jpg')} alt="Viv typography and logo explorations artboard 6" className="w-full h-auto block" />
+                          <img src={publicAsset('assets/imgs/Viv Brand/Artboard 6-100.jpg')} alt="Viv typography and logo explorations artboard 6" className="w-full h-auto block" />
                         </div>
                       </div>
                     </FadeInSection>
@@ -1140,13 +1153,13 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                           I designed assets across multiple applications, from digital to environmental.
                         </p>
                         <div className="relative w-full">
-                          <img src={normalizeAssetSrc('assets/imgs/Viv Brand/RE_Mark_Up_Posters_001.jpg')} alt="Viv applications posters" className="w-full h-auto block" />
+                          <img src={publicAsset('assets/imgs/Viv Brand/RE_Mark_Up_Posters_001.jpg')} alt="Viv applications posters" className="w-full h-auto block" />
                         </div>
                         <div className="relative w-full">
-                          <img src={normalizeAssetSrc('assets/imgs/Viv Brand/RE_Movenment_Website_001.jpg')} alt="Viv applications website" className="w-full h-auto block" />
+                          <img src={publicAsset('assets/imgs/Viv Brand/RE_Movenment_Website_001.jpg')} alt="Viv applications website" className="w-full h-auto block" />
                         </div>
                         <div className="relative w-full">
-                          <img src={normalizeAssetSrc('assets/imgs/Viv Brand/RE_Movement_Presentation.jpg')} alt="Viv applications presentation" className="w-full h-auto block" />
+                          <img src={publicAsset('assets/imgs/Viv Brand/RE_Movement_Presentation.jpg')} alt="Viv applications presentation" className="w-full h-auto block" />
                         </div>
                       </div>
                     </FadeInSection>
@@ -1546,7 +1559,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                           <React.Fragment key={src}>
                             <div className="relative w-full">
                               <img
-                                src={normalizeAssetSrc(src)}
+                                src={publicAsset(src)}
                                 alt={`Lululemon campaign ${i + 1}`}
                                 loading="lazy"
                                 decoding="async"
@@ -1557,7 +1570,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                               <div className="flex w-full justify-center">
                                 <div className="relative inline-block max-w-full">
                                   <img
-                                    src={normalizeAssetSrc(LULU_OOH_INTRO_GIF)}
+                                    src={publicAsset(LULU_OOH_INTRO_GIF)}
                                     alt="Lululemon campaign motion study"
                                     loading="lazy"
                                     decoding="async"
@@ -1626,7 +1639,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                           </ul>
                         </div>
                         <div className="lg:col-span-7 aspect-square md:aspect-[16/10] overflow-hidden relative flex items-center justify-center">
-                            <img src={`assets/imgs/Case1.png`} className="w-full h-full object-contain opacity-80" alt="Challenge visual" />
+                            <img src={publicAsset('assets/imgs/Case1.png')} className="w-full h-full object-contain opacity-80" alt="Challenge visual" />
                         </div>
                       </div>
                     </FadeInSection>

@@ -2,18 +2,11 @@
 import React, { useMemo, useState } from 'react';
 import { CASE_STUDIES } from '../constants';
 import { CaseStudy } from '../types';
+import { publicAsset } from '../utils/publicAsset';
 
 interface WorkGridProps {
   onSelectCaseStudy: (study: CaseStudy) => void;
 }
-
-const normalizeAssetSrc = (src: string) => {
-  try {
-    return encodeURI(decodeURI(src));
-  } catch {
-    return encodeURI(src);
-  }
-};
 
 type WorkPortfolioFilter = 'all' | 'branding' | 'ux' | 'motion';
 
@@ -64,7 +57,7 @@ const GridCard: React.FC<{ study: CaseStudy; onClick: () => void }> = ({ study, 
           <div className="absolute inset-0 overflow-hidden rounded-xl">
             <div className="h-full w-full overflow-hidden rounded-xl">
               <img
-                src={normalizeAssetSrc(study.imageUrl)}
+                src={publicAsset(study.imageUrl)}
                 alt={title}
                 width={800}
                 height={600}

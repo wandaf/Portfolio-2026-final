@@ -11,6 +11,8 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
-    sourcemap: false
+    sourcemap: false,
+    // Keep Vite bundles out of `public/assets` (static images live there).
+    assetsDir: '_vite',
   }
 });

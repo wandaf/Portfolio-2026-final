@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { publicAsset } from '../utils/publicAsset';
 
 const About: React.FC = () => {
   return (
@@ -16,7 +17,7 @@ const About: React.FC = () => {
         <div className="md:col-span-4 lg:col-span-3">
           <div className="aspect-square bg-gray-100 overflow-hidden grayscale rounded-[2px] shadow-sm">
             <img 
-              src="assets/imgs/me.png" 
+              src={publicAsset('assets/imgs/me.png')} 
               alt="Wanda Felsenhardt"
               className="w-full h-full object-cover"
             />

@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
+import { publicAsset } from '../utils/publicAsset';
 
 interface Sketch {
   id: number;
@@ -247,7 +248,7 @@ const Sketchbook: React.FC = () => {
                     <div className="spine-accent" />
                     <div className="flex-1 relative bg-[#f9f9f9]">
                       <img 
-                        src={sketch.url} 
+                        src={publicAsset(sketch.url)} 
                         alt={sketch.title} 
                         className="w-full h-full object-cover pointer-events-none" 
                       />
@@ -261,7 +262,7 @@ const Sketchbook: React.FC = () => {
                     <div className="spine-accent-back" />
                     <div className="flex-1 relative bg-[#f9f9f9]">
                       <img 
-                        src={sketch.backUrl} 
+                        src={publicAsset(sketch.backUrl)} 
                         alt={`${sketch.title} back`} 
                         className="w-full h-full object-cover pointer-events-none" 
                       />
@@ -292,7 +293,7 @@ const Sketchbook: React.FC = () => {
               ? 'Click to Open' 
               : isResetting 
                 ? 'Closing...' 
-                : `FRAGMENT ${currentPage} / ${totalPages - 1}`
+                : `${currentPage} / ${totalPages - 1}`
             }
           </p>
         </div>
