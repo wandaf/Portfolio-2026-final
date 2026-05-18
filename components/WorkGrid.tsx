@@ -148,9 +148,22 @@ const WorkGrid = React.memo(function WorkGrid({ onSelectCaseStudy }: WorkGridPro
           <GridCard
             key={study.id ?? study.slug ?? idx}
             study={study}
-            onClick={() =>
-              study.externalUrl ? window.open(study.externalUrl, '_blank', 'noopener,noreferrer') : onSelectCaseStudy(study)
-            }
+            onClick={() => {
+              if (study.externalUrl) {
+                const url = study.externalUrl;
+                const isSameSitePath =
+                  url.startsWith('/') ||
+                  url.startsWith('./') ||
+                  url.includes('wandaf.github.io');
+                if (isSameSitePath) {
+                  window.location.href = url.startsWith('/') ? url : url.replace(/^\.\//, '/');
+                } else {
+                  window.open(url, '_blank', 'noopener,noreferrer');
+                }
+                return;
+              }
+              onSelectCaseStudy(study);
+            }}
           />
         ))}
       </div>

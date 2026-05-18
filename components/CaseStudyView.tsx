@@ -984,6 +984,14 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                       <p className="text-gray-600 font-light text-lg leading-relaxed max-w-2xl">
                         The MTA publishes open source data on their website on a variety of topics. I wanted to challenge myself to create a data visualization of their user ridership data. I decided to combine this data set with publicly-available weather data.
                       </p>
+                      <div className="mt-8">
+                        <a
+                          href="/mta-transit/"
+                          className="inline-block rounded-xl bg-[#212529] px-6 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90"
+                        >
+                          View live visualization
+                        </a>
+                      </div>
                     </FadeInSection>
                   </section>
 
@@ -1076,7 +1084,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                         <div>
                           <h3 className="text-base font-semibold text-gray-900 mb-2">Future Considerations</h3>
                           <ul className="text-gray-600 font-light text-lg leading-relaxed list-disc list-inside space-y-2">
-                            <li>Fixing coding bugs and publishing the dashboard to Github!</li>
+                            <li>Expanding the dataset and refining filter interactions.</li>
                             <li>Experimenting more with UI motion design.</li>
                           </ul>
                         </div>
