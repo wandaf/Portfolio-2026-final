@@ -2,7 +2,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { Page } from '../types';
-
 interface BrandingProps {
   isDarkMode: boolean;
   onPageChange: (page: Page) => void;

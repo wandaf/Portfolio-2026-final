@@ -12,6 +12,7 @@ import Playground from './components/Playground';
 import About from './components/About';
 import Resume from './components/Resume';
 import CaseStudyView from './components/CaseStudyView';
+import { whiteFadeFromScroll } from './hooks/useScrollYFrame';
 
 function pageToPath(page: Page): string {
   switch (page) {
@@ -36,11 +37,11 @@ function pathToActivePage(pathname: string): Page {
   return Page.WORK;
 }
 
-const WorkRoute: React.FC<{ onSelectCaseStudy: (study: CaseStudy) => void; scrollY: number }> = ({ onSelectCaseStudy, scrollY }) => {
+const WorkRoute: React.FC<{ onSelectCaseStudy: (study: CaseStudy) => void }> = ({ onSelectCaseStudy }) => {
   return (
     <div className="w-full">
-      <Hero scrollY={scrollY} />
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 relative z-20">
+      <Hero />
+      <div className="relative z-20 mx-auto max-w-[1400px] bg-white px-6 md:px-12 lg:px-16">
         <WorkGrid onSelectCaseStudy={onSelectCaseStudy} />
       </div>
     </div>
@@ -71,39 +72,18 @@ const App: React.FC = () => {
   const [scrollY, setScrollY] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // Animate document title as a subtle marquee
-  useEffect(() => {
-    if (typeof document === 'undefined') return;
-
-    const base = 'Wanda Felsenhardt | Visual Designer';
-    const spacer = '   ';
-    const text = base + spacer;
-    let index = 0;
-
-    const updateTitle = () => {
-      // Rotate the string one character at a time
-      const rotated = text.slice(index) + text.slice(0, index);
-      document.title = rotated;
-      index = (index + 1) % text.length;
-    };
-
-    // Set an initial title
-    document.title = base;
-    const interval = window.setInterval(updateTitle, 250); // ~4 chars per second
-
-    return () => {
-      window.clearInterval(interval);
-      document.title = base;
-    };
-  }, []);
 
   useEffect(() => {
     const pendingY = { current: 0 };
     let rafId: number | null = null;
 
+    let lastSent = -1;
     const flushScrollY = () => {
       rafId = null;
-      setScrollY(pendingY.current);
+      const y = pendingY.current;
+      if (lastSent >= 0 && Math.abs(y - lastSent) < 12 && y > 0) return;
+      lastSent = y;
+      setScrollY(y);
     };
 
     const onScroll = () => {
@@ -130,6 +110,32 @@ const App: React.FC = () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
       if (rafId != null) window.cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  // Animate document title as a subtle marquee
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    const base = 'Wanda Felsenhardt | Visual Designer';
+    const spacer = '   ';
+    const text = base + spacer;
+    let index = 0;
+
+    const updateTitle = () => {
+      // Rotate the string one character at a time
+      const rotated = text.slice(index) + text.slice(0, index);
+      document.title = rotated;
+      index = (index + 1) % text.length;
+    };
+
+    // Set an initial title
+    document.title = base;
+    const interval = window.setInterval(updateTitle, 250); // ~4 chars per second
+
+    return () => {
+      window.clearInterval(interval);
+      document.title = base;
     };
   }, []);
 
@@ -173,7 +179,7 @@ const App: React.FC = () => {
     if (scrollY <= startFade) return 0;
     if (scrollY >= endFade) return 1;
     const t = (scrollY - startFade) / (endFade - startFade);
-    return t * t * (3 - 2 * t); // smoothstep for softer transition
+    return t * t * (3 - 2 * t);
   }, [scrollY, displayPage]);
 
   // Nav/branding: dark mode (light text) when we're still on the gradient
@@ -224,11 +230,11 @@ const App: React.FC = () => {
         <main
           style={mainStyle}
           className={`relative z-10 flex min-h-0 w-full flex-1 rounded-b-[1.75rem] sm:rounded-b-[2rem] md:rounded-b-[2.5rem] transition-opacity duration-300 ease-in-out ${
-            isCaseStudyRoute ? 'overflow-visible' : 'overflow-hidden'
+            isCaseStudyRoute ? 'overflow-visible' : ''
           } ${isPlayground ? 'bg-black' : 'bg-white'} ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
         >
           <Routes location={displayLocation}>
-            <Route path="/" element={<WorkRoute onSelectCaseStudy={handleCaseStudySelect} scrollY={scrollY} />} />
+            <Route path="/" element={<WorkRoute onSelectCaseStudy={handleCaseStudySelect} />} />
             <Route
               path="/playground"
               element={

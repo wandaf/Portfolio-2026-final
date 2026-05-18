@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { GrainGradient } from '@paper-design/shaders-react';
+import HeroBackground from './HeroBackground';
+import { useScrollYFrame, whiteFadeFromScroll } from '../hooks/useScrollYFrame';
 
-interface HeroProps {
-  scrollY: number;
-}
-
-const Hero: React.FC<HeroProps> = ({ scrollY }) => {
+const Hero: React.FC = () => {
+  const scrollY = useScrollYFrame();
   const [isMounted, setIsMounted] = useState(false);
   const [time, setTime] = useState('');
   const [size, setSize] = useState({ width: 1280, height: 720 });
-  const fullText = "Wanda Felsenhardt";
+  const fullText = 'Wanda Felsenhardt';
 
   useEffect(() => {
     const handleResize = () => {
@@ -19,21 +17,20 @@ const Hero: React.FC<HeroProps> = ({ scrollY }) => {
     window.addEventListener('resize', handleResize);
     const timer = setTimeout(() => setIsMounted(true), 150);
 
-    // Time update logic for Chicago
     const updateTime = () => {
       const now = new Date();
       const timeString = new Intl.DateTimeFormat('en-US', {
         timeZone: 'America/Chicago',
         hour: 'numeric',
         minute: '2-digit',
-        hour12: true
+        hour12: true,
       }).format(now);
       setTime(timeString);
     };
 
     updateTime();
     const interval = setInterval(updateTime, 1000);
-    
+
     return () => {
       window.removeEventListener('resize', handleResize);
       clearTimeout(timer);
@@ -42,49 +39,28 @@ const Hero: React.FC<HeroProps> = ({ scrollY }) => {
   }, []);
 
   const vh = typeof window !== 'undefined' ? window.innerHeight : 800;
-  
-  const contentOpacity = Math.max(0, 1 - (scrollY / (vh * 0.7)));
-  const scale = 1 + (scrollY / vh * 0.04);
-  const translateY = scrollY * 0.25;
 
-  // Same as App whiteFadeProgress so hero white overlay stays in sync with global transition
-  const startFade = 0;
-  const endFade = vh * 0.9;
-  const whiteFadeProgress =
-    scrollY <= startFade ? 0 : scrollY >= endFade ? 1 : (() => {
-      const t = (scrollY - startFade) / (endFade - startFade);
-      return t * t * (3 - 2 * t);
-    })();
-  const bandHeightVh = whiteFadeProgress * 174; // starts at 0, grows fast while staying bottom-anchored
+  const contentOpacity = Math.max(0, 1 - scrollY / (vh * 0.7));
+  const scale = 1 + (scrollY / vh) * 0.04;
+  const translateY = scrollY * 0.25;
+  const whiteFadeProgress = whiteFadeFromScroll(scrollY, vh);
 
   return (
-    <section className="relative w-full min-h-[100vh] h-[100vh] flex flex-col items-center justify-start overflow-hidden z-10 pt-40 md:pt-56 bg-[#0d0707]">
-      {/* Grain gradient */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none">
-        <GrainGradient
-          width={size.width}
-          height={size.height}
-          colors={['#043153', '#0425a9', '#2e428a', '#09729f']}
-          colorBack="#0d0707"
-          softness={1}
-          intensity={0.5}
-          noise={0.25}
-          shape="corners"
-          speed={0.6}
-          offsetX={0.14}
-          offsetY={0.06}
-        />
-      </div>
-      {/* Bottom-anchored white band that progressively grows upward on scroll */}
+    <section className="relative z-10 flex h-[100vh] min-h-[100vh] w-full flex-col items-center justify-start overflow-hidden bg-[#0d0707] pt-40 md:pt-56">
+      <HeroBackground width={size.width} height={size.height} />
+
       <div
-        className="absolute left-0 right-0 bottom-0 pointer-events-none"
+        className="pointer-events-none absolute bottom-0 left-0 right-0 z-[1]"
         style={{
-          height: `${bandHeightVh}vh`,
+          height: `${whiteFadeProgress * 100}vh`,
+          maxHeight: '100%',
           background:
             'linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 28%, rgba(255,255,255,0.95) 48%, rgba(255,255,255,0.68) 66%, rgba(255,255,255,0.26) 84%, rgba(255,255,255,0) 100%)',
           opacity: whiteFadeProgress > 0 ? 1 : 0,
         }}
+        aria-hidden
       />
+
       <style>
         {`
           .name-container {
@@ -97,21 +73,12 @@ const Hero: React.FC<HeroProps> = ({ scrollY }) => {
             display: inline-block;
             position: relative;
             color: white;
-            
-            /* Spacing to ensure no clipping during lift or with descenders */
             padding: 0.15em 0.02em;
             margin: 0;
-            
-            /* Initial state for entrance animation: blurred, offset, and invisible */
             opacity: 0;
             filter: blur(35px);
             transform: translateY(1.5em);
-            
-            /* 
-               Transition for the entrance: 
-               Uses a sophisticated cubic-bezier for a weightless 'drifting' feel.
-            */
-            transition: 
+            transition:
               opacity 2.2s cubic-bezier(0.19, 1, 0.22, 1) var(--stagger),
               filter 2.8s cubic-bezier(0.19, 1, 0.22, 1) var(--stagger),
               transform 2.2s cubic-bezier(0.19, 1, 0.22, 1) var(--stagger);
@@ -124,9 +91,9 @@ const Hero: React.FC<HeroProps> = ({ scrollY }) => {
           }
         `}
       </style>
-      
-      <div 
-        className={`max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 w-full will-change-transform text-white relative ${isMounted ? 'is-mounted' : ''}`}
+
+      <div
+        className={`relative z-[2] mx-auto w-full max-w-[1400px] px-6 text-white md:px-12 lg:px-16 ${isMounted ? 'is-mounted' : ''}`}
         style={{
           opacity: contentOpacity,
           transform: `scale(${scale}) translateY(${translateY}px)`,
