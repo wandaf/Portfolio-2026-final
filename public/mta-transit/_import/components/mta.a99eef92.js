@@ -3,21 +3,42 @@ import * as d3 from "../../_npm/d3@7.9.0/66d82917.js";
 
 let jQueryLoadPromise = null;
 
+function loadScript(src) {
+    return new Promise((resolve, reject) => {
+        const existing = document.querySelector(`script[src="${src}"]`);
+        if (existing) {
+            existing.addEventListener("load", () => resolve(), { once: true });
+            existing.addEventListener("error", () => reject(new Error(`Failed to load ${src}`)), { once: true });
+            if (existing.dataset.loaded === "true") resolve();
+            return;
+        }
+        const script = document.createElement("script");
+        script.src = src;
+        script.async = true;
+        script.addEventListener("load", () => {
+            script.dataset.loaded = "true";
+            resolve();
+        }, { once: true });
+        script.addEventListener("error", () => reject(new Error(`Failed to load ${src}`)), { once: true });
+        document.head.appendChild(script);
+    });
+}
+
 export function ensureJQuery() {
     if (globalThis.jQuery?.fn?.slider) {
         return Promise.resolve(globalThis.jQuery);
     }
     if (!jQueryLoadPromise) {
         jQueryLoadPromise = (async () => {
-            const jq = (await import("../../_npm/jquery@3.7.1/dist/jquery.js.64e833e9.js")).default;
-            globalThis.jQuery = jq;
+            await loadScript("https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js");
+            await loadScript("https://cdn.jsdelivr.net/npm/jquery-ui@1.14.2/dist/jquery-ui.min.js");
+            const jq = globalThis.jQuery;
+            if (!jq?.fn?.slider) {
+                throw new Error("jQuery UI slider plugin failed to load.");
+            }
             if (typeof globalThis.window !== "undefined") {
                 globalThis.window.jQuery = jq;
                 globalThis.window.$ = jq;
-            }
-            await import("../../_npm/jquery-ui@1.14.2/dist/jquery-ui.js.4af2d253.js");
-            if (!jq.fn.slider) {
-                throw new Error("jQuery UI slider plugin failed to load.");
             }
             return jq;
         })();
@@ -68,8 +89,8 @@ export function restoreAllBars() {
 function getTransportFilterMode() {
     const busButton = document.getElementById("bus-button");
     const trainButton = document.getElementById("train-button");
-    if (busButton?.classList.contains("inactive")) return "bus";
-    if (trainButton?.classList.contains("inactive")) return "train";
+    if (busButton?.classList.contains("inactive")) return "train";
+    if (trainButton?.classList.contains("inactive")) return "bus";
     return "both";
 }
 
@@ -573,6 +594,7 @@ export async function chart(weather_data, mta_data) {
     // ADD TRAIN SVG
     dataviz_svg.append("g")
         .attr("id", "train-svg-g")
+        .attr("class", "train-ring")
         .selectAll("path")
         .data(mta_data)
         .enter()
@@ -668,6 +690,7 @@ export async function chart(weather_data, mta_data) {
     // ADD BUS SVG
     dataviz_svg.append("g")
         .attr("id", "bus-svg-g")
+        .attr("class", "bus-ring")
         .selectAll("path")
         .data(mta_data)
         .enter()
@@ -794,10 +817,10 @@ export async function chart(weather_data, mta_data) {
         let cloudcover = weather_data[s].cloudcover;
         let date = weather_data[s].datetime;
 
-        if (precip_type.includes("rain")) {
+        if (String(precip_type).includes("rain")) {
             rainy_days.push(date)
         }
-        if (precip_type.includes("snow")) {
+        if (String(precip_type).includes("snow")) {
             snowy_days.push(date)
         }
         if (cloudcover > 55) {

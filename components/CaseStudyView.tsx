@@ -985,12 +985,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                         The MTA publishes open source data on their website on a variety of topics. I wanted to challenge myself to create a data visualization of their user ridership data. I decided to combine this data set with publicly-available weather data.
                       </p>
                       <div className="mt-8">
-                        <a
-                          href="/mta-transit/"
-                          className="inline-block rounded-xl bg-[#212529] px-6 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90"
-                        >
-                          View live visualization
-                        </a>
+                        <ResearchDeckCallout />
                       </div>
                     </FadeInSection>
                   </section>
