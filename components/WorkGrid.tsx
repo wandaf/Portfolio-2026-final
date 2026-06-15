@@ -123,7 +123,13 @@ const WorkGrid = React.memo(function WorkGrid({ onSelectCaseStudy }: WorkGridPro
               type="button"
               role="tab"
               aria-selected={selected}
-              onClick={() => setActiveFilter(tab.id)}
+              onClick={() => {
+                if (tab.id === 'all' || activeFilter === tab.id) {
+                  setActiveFilter('all');
+                } else {
+                  setActiveFilter(tab.id);
+                }
+              }}
               className={`rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.14em] transition-colors md:px-5 md:py-2.5 md:text-xs ${
                 selected
                   ? 'bg-gray-900 text-white'
