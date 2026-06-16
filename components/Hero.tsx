@@ -160,29 +160,62 @@ const Hero: React.FC = () => {
             className="hero-intro text-left text-[1.89rem] sm:text-[2.1rem] md:text-[2.625rem] lg:text-[3.01rem] mb-8 md:mb-10 transition-opacity duration-1000 delay-300"
             style={{ opacity: isMounted ? 1 : 0 }}
           >
-            <span className="block">
-              Hi, I&rsquo;m Wanda{' '}
-              <HeroIntroIcon src={HERO_ICONS.hand} alt="" motion="wave" />
-              {' '}Based in Chicago
+            <span className="md:hidden">
+              <span className="block">
+                Hi, I&rsquo;m Wanda{' '}
+                <HeroIntroIcon src={HERO_ICONS.hand} alt="" motion="wave" />
+              </span>
+              <span className="block">Based in Chicago</span>
+              <span className="block">
+                I&rsquo;m a{' '}
+                <HeroIntroIcon src={HERO_ICONS.pencil} alt="" />
+                {' '}multidisciplinary
+              </span>
+              <span className="block">designer with experience</span>
+              <span className="block">
+                in{' '}
+                <HeroIntroIcon src={HERO_ICONS.paint} alt="" />
+                {' '}
+                <em>branding,</em>
+              </span>
+              <span className="block">
+                <HeroIntroIcon src={HERO_ICONS.desktop} alt="" />
+                {' '}
+                <em>digital design</em>
+              </span>
+              <span className="block">
+                and{' '}
+                <HeroIntroIcon src={HERO_ICONS.star} alt="" motion="bob" />
+                {' '}
+                <em>motion.</em>
+              </span>
             </span>
-            <span className="block">
-              I&rsquo;m a{' '}
-              <HeroIntroIcon src={HERO_ICONS.pencil} alt="" />
-              {' '}multidisciplinary designer
-            </span>
-            <span className="block">
-              with experience in{' '}
-              <HeroIntroIcon src={HERO_ICONS.paint} alt="" />
-              {' '}
-              <em>branding,</em>
-            </span>
-            <span className="block">
-              <HeroIntroIcon src={HERO_ICONS.desktop} alt="" />
-              {' '}
-              <em>digital design</em> and{' '}
-              <HeroIntroIcon src={HERO_ICONS.star} alt="" motion="bob" />
-              {' '}
-              <em>motion.</em>
+
+            <span className="hidden md:block">
+              <span className="block">
+                Hi, I&rsquo;m Wanda{' '}
+                <HeroIntroIcon src={HERO_ICONS.hand} alt="" motion="wave" />
+                {' '}Based in Chicago
+              </span>
+              <span className="block">
+                I&rsquo;m a{' '}
+                <HeroIntroIcon src={HERO_ICONS.pencil} alt="" />
+                {' '}multidisciplinary designer
+              </span>
+              <span className="block">
+                with experience in{' '}
+                <HeroIntroIcon src={HERO_ICONS.paint} alt="" />
+                {' '}
+                <em>branding,</em>
+              </span>
+              <span className="block">
+                <HeroIntroIcon src={HERO_ICONS.desktop} alt="" />
+                {' '}
+                <em>digital design</em> and{' '}
+                <HeroIntroIcon src={HERO_ICONS.star} alt="" motion="bob" />
+                {' '}
+                <em>motion.</em>
+              </span>
             </span>
           </p>
 
