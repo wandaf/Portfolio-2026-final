@@ -69,7 +69,7 @@ const Hero: React.FC = () => {
   const whiteFadeProgress = whiteFadeFromScroll(scrollY, vh);
 
   return (
-    <section className="relative z-10 flex min-h-[100vh] w-full flex-col justify-center overflow-x-hidden bg-[#0d0707] px-6 py-16 md:px-12 md:py-20 lg:px-16">
+    <section className="relative z-10 flex min-h-[100vh] w-full flex-col justify-start md:justify-center overflow-x-hidden bg-[#0d0707] px-6 pt-40 pb-16 md:px-12 md:pt-32 md:pb-20 lg:px-16">
       <HeroBackground width={size.width} height={size.height} />
 
       <div
