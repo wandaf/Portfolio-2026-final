@@ -166,13 +166,13 @@ const Playground: React.FC = () => {
       <div className="mb-[11.2rem] md:mb-56">
         <header className="relative overflow-visible px-4 md:px-0">
           <div className="relative max-w-xl md:max-w-2xl lg:max-w-3xl">
-            <div className="relative">
-              <h2 className="text-5xl font-light font-['IBM_Plex_Serif'] tracking-tighter max-md:pr-[8.5rem] md:text-7xl">
-                Playground
-              </h2>
-              <div className="absolute right-0 top-1/2 z-10 -translate-y-1/2 scale-[0.68] origin-center md:left-full md:right-auto md:top-0 md:ml-3 md:translate-x-7 md:-translate-y-[96px] md:scale-100 md:origin-center">
+            <div className="flex flex-col gap-5 md:relative md:w-fit">
+              <div className="self-end md:absolute md:left-full md:top-0 md:z-10 md:ml-3 md:-translate-y-[96px] md:translate-x-7">
                 <PlaygroundInstagramSticker />
               </div>
+              <h2 className="text-5xl font-light font-['IBM_Plex_Serif'] tracking-tighter md:text-7xl">
+                Playground
+              </h2>
             </div>
             <div className="mt-6 md:mt-8 h-px w-16 md:w-20 bg-white/20" aria-hidden />
             <p className="mt-6 md:mt-8 text-gray-400 text-lg md:text-xl font-light leading-relaxed md:max-w-md lg:max-w-lg">
