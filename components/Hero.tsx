@@ -69,7 +69,7 @@ const Hero: React.FC = () => {
   const whiteFadeProgress = whiteFadeFromScroll(scrollY, vh);
 
   return (
-    <section className="relative z-10 flex h-[100vh] min-h-[100vh] w-full flex-col items-center justify-start overflow-hidden bg-[#0d0707] pt-40 md:pt-56">
+    <section className="relative z-10 flex min-h-[100vh] w-full flex-col items-center justify-center overflow-x-hidden bg-[#0d0707] px-6 py-16 md:px-12 md:py-20 lg:px-16">
       <HeroBackground width={size.width} height={size.height} />
 
       <div
@@ -105,8 +105,7 @@ const Hero: React.FC = () => {
             margin: 0 0.12em;
             vertical-align: -0.1em;
             flex-shrink: 0;
-            filter: brightness(0) saturate(100%) invert(88%) sepia(14%) saturate(900%)
-              hue-rotate(218deg) brightness(102%) contrast(92%);
+            filter: brightness(0) invert(1);
           }
 
           @keyframes hero-hand-wave {
@@ -156,9 +155,9 @@ const Hero: React.FC = () => {
           transform: `scale(${scale}) translateY(${translateY}px)`,
         }}
       >
-        <div className="max-w-6xl text-left">
+        <div className="mx-auto flex w-full max-w-5xl flex-col items-center">
           <p
-            className="hero-intro max-w-4xl text-[1.35rem] sm:text-2xl md:text-3xl lg:text-[2.15rem] mb-10 md:mb-16 transition-opacity duration-1000 delay-300"
+            className="hero-intro w-full text-left text-[1.89rem] sm:text-[2.1rem] md:text-[2.625rem] lg:text-[3.01rem] mb-8 md:mb-10 transition-opacity duration-1000 delay-300"
             style={{ opacity: isMounted ? 1 : 0 }}
           >
             <span className="block">
@@ -187,26 +186,7 @@ const Hero: React.FC = () => {
             </span>
           </p>
 
-          <div className="flex flex-col md:flex-row gap-8 md:gap-24 mb-10 md:mb-16 transition-all duration-1000 delay-700" style={{ opacity: isMounted ? 1 : 0, transform: isMounted ? 'none' : 'translateY(20px)' }}>
-            <div className="space-y-2">
-              <h3 className="text-[10px] md:text-[11px] uppercase tracking-[0.3em] font-medium text-white font-mono-tag">Focus</h3>
-              <p className="text-xs md:text-sm opacity-50 font-light max-w-[200px]">
-                Branding, Digital Design,
-                <br />
-                and motion
-              </p>
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-[10px] md:text-[11px] uppercase tracking-[0.3em] font-medium text-white font-mono-tag">Philosophy</h3>
-              <p className="text-xs md:text-sm opacity-50 font-light max-w-[280px]">
-                Design happens in conversation
-                <br />
-                with others
-              </p>
-            </div>
-          </div>
-
-          <div className="w-full border-y border-white/10 py-4 md:py-7 mt-8 md:mt-12 flex flex-wrap justify-start gap-y-3 gap-x-4 md:gap-x-6 items-center transition-opacity duration-1000 delay-1000" style={{ opacity: isMounted ? 1 : 0 }}>
+          <div className="w-full border-y border-white/10 py-4 md:py-7 flex flex-wrap justify-start gap-y-3 gap-x-4 md:gap-x-6 items-center transition-opacity duration-1000 delay-700" style={{ opacity: isMounted ? 1 : 0 }}>
             <div className="flex items-center gap-3 md:gap-4">
               <span className="text-[9px] md:text-[11px] uppercase tracking-[0.3em] font-medium text-white">currently</span>
               <span className="text-white font-light">|</span>
