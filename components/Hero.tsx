@@ -69,7 +69,7 @@ const Hero: React.FC = () => {
   const whiteFadeProgress = whiteFadeFromScroll(scrollY, vh);
 
   return (
-    <section className="relative z-10 flex min-h-[100vh] w-full flex-col items-center justify-center overflow-x-hidden bg-[#0d0707] px-6 py-16 md:px-12 md:py-20 lg:px-16">
+    <section className="relative z-10 flex min-h-[100vh] w-full flex-col justify-center overflow-x-hidden bg-[#0d0707] px-6 py-16 md:px-12 md:py-20 lg:px-16">
       <HeroBackground width={size.width} height={size.height} />
 
       <div
@@ -149,15 +149,15 @@ const Hero: React.FC = () => {
       </style>
 
       <div
-        className={`relative z-[2] mx-auto w-full max-w-[1400px] px-6 text-white md:px-12 lg:px-16 ${isMounted ? 'is-mounted' : ''}`}
+        className={`relative z-[2] w-full max-w-[1400px] text-white ${isMounted ? 'is-mounted' : ''}`}
         style={{
           opacity: contentOpacity,
           transform: `scale(${scale}) translateY(${translateY}px)`,
         }}
       >
-        <div className="mx-auto flex w-full max-w-5xl flex-col items-center">
+        <div className="inline-block max-w-full text-left">
           <p
-            className="hero-intro w-full text-left text-[1.89rem] sm:text-[2.1rem] md:text-[2.625rem] lg:text-[3.01rem] mb-8 md:mb-10 transition-opacity duration-1000 delay-300"
+            className="hero-intro text-left text-[1.89rem] sm:text-[2.1rem] md:text-[2.625rem] lg:text-[3.01rem] mb-8 md:mb-10 transition-opacity duration-1000 delay-300"
             style={{ opacity: isMounted ? 1 : 0 }}
           >
             <span className="block">
@@ -186,7 +186,7 @@ const Hero: React.FC = () => {
             </span>
           </p>
 
-          <div className="w-full border-y border-white/10 py-4 md:py-7 flex flex-wrap justify-start gap-y-3 gap-x-4 md:gap-x-6 items-center transition-opacity duration-1000 delay-700" style={{ opacity: isMounted ? 1 : 0 }}>
+          <div className="w-0 min-w-full border-y border-white/10 py-4 md:py-7 flex flex-wrap justify-start gap-y-3 gap-x-4 md:gap-x-6 items-center transition-opacity duration-1000 delay-700" style={{ opacity: isMounted ? 1 : 0 }}>
             <div className="flex items-center gap-3 md:gap-4">
               <span className="text-[9px] md:text-[11px] uppercase tracking-[0.3em] font-medium text-white">currently</span>
               <span className="text-white font-light">|</span>
