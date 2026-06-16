@@ -170,7 +170,7 @@ const Playground: React.FC = () => {
       <div className="mb-[11.2rem] md:mb-56">
         <header className="relative overflow-visible px-4 md:px-0">
           <div className="relative max-w-xl md:max-w-2xl lg:max-w-3xl">
-            <div className="mb-8 flex justify-center md:hidden">
+            <div className="mb-8 flex justify-end md:hidden">
               <PlaygroundInstagramSticker />
             </div>
             <div className="relative hidden md:block md:w-fit">
