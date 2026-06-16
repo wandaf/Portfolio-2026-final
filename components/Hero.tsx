@@ -2,12 +2,35 @@ import React, { useState, useEffect } from 'react';
 import HeroBackground from './HeroBackground';
 import { useScrollYFrame, whiteFadeFromScroll } from '../hooks/useScrollYFrame';
 
+const HERO_ICONS = {
+  hand: '/assets/icons/Waving-Hand--Streamline-Plump.svg',
+  pencil: '/assets/icons/Fill-And-Sign--Streamline-Plump.svg',
+  paint: '/assets/icons/Paint-Bucket--Streamline-Plump.svg',
+  desktop: '/assets/icons/Desktop-Emoji--Streamline-Plump.svg',
+  star: '/assets/icons/Star-2--Streamline-Plump.svg',
+} as const;
+
+type HeroIntroIconProps = {
+  src: string;
+  alt: string;
+  motion?: 'wave' | 'bob';
+};
+
+const HeroIntroIcon: React.FC<HeroIntroIconProps> = ({ src, alt, motion }) => (
+  <img
+    src={src}
+    alt={alt}
+    aria-hidden={alt === ''}
+    className={`hero-intro-icon${motion ? ` hero-intro-icon--${motion}` : ''}`}
+    draggable={false}
+  />
+);
+
 const Hero: React.FC = () => {
   const scrollY = useScrollYFrame();
   const [isMounted, setIsMounted] = useState(false);
   const [time, setTime] = useState('');
   const [size, setSize] = useState({ width: 1280, height: 720 });
-  const fullText = 'Wanda Felsenhardt';
 
   useEffect(() => {
     const handleResize = () => {
@@ -63,31 +86,65 @@ const Hero: React.FC = () => {
 
       <style>
         {`
-          .name-container {
-            cursor: default;
-            position: relative;
-            display: inline-block;
-          }
-
-          .letter-span {
-            display: inline-block;
-            position: relative;
+          .hero-intro {
+            font-family: 'IBM Plex Serif', serif;
+            font-weight: 300;
             color: white;
-            padding: 0.15em 0.02em;
-            margin: 0;
-            opacity: 0;
-            filter: blur(35px);
-            transform: translateY(1.5em);
-            transition:
-              opacity 2.2s cubic-bezier(0.19, 1, 0.22, 1) var(--stagger),
-              filter 2.8s cubic-bezier(0.19, 1, 0.22, 1) var(--stagger),
-              transform 2.2s cubic-bezier(0.19, 1, 0.22, 1) var(--stagger);
+            line-height: 1.35;
+            letter-spacing: -0.02em;
           }
 
-          .letter-span.is-visible {
-            opacity: 1;
-            filter: blur(0);
-            transform: translateY(0);
+          .hero-intro em {
+            font-style: italic;
+          }
+
+          .hero-intro-icon {
+            display: inline-block;
+            width: 0.92em;
+            height: 0.92em;
+            margin: 0 0.12em;
+            vertical-align: -0.1em;
+            flex-shrink: 0;
+            filter: brightness(0) saturate(100%) invert(88%) sepia(14%) saturate(900%)
+              hue-rotate(218deg) brightness(102%) contrast(92%);
+          }
+
+          @keyframes hero-hand-wave {
+            0%,
+            100% {
+              transform: rotate(0deg);
+            }
+            20% {
+              transform: rotate(16deg);
+            }
+            40% {
+              transform: rotate(-6deg);
+            }
+            60% {
+              transform: rotate(14deg);
+            }
+            80% {
+              transform: rotate(-4deg);
+            }
+          }
+
+          @keyframes hero-star-bob {
+            0%,
+            100% {
+              transform: translateY(0);
+            }
+            50% {
+              transform: translateY(-0.18em);
+            }
+          }
+
+          .hero-intro-icon--wave {
+            transform-origin: 72% 88%;
+            animation: hero-hand-wave 2.2s ease-in-out infinite;
+          }
+
+          .hero-intro-icon--bob {
+            animation: hero-star-bob 2.4s ease-in-out infinite;
           }
         `}
       </style>
@@ -100,25 +157,35 @@ const Hero: React.FC = () => {
         }}
       >
         <div className="max-w-6xl text-left">
-          <h1 className="name-container text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-light tracking-tighter mb-6 md:mb-10 font-['IBM_Plex_Serif'] text-white whitespace-nowrap overflow-visible leading-[1.2] min-h-[1.2em] flex flex-wrap items-center select-none">
-            {fullText.split('').map((char, i) => (
-              <span
-                key={i}
-                className={`letter-span ${isMounted ? 'is-visible' : ''}`}
-                style={{ 
-                  ['--stagger' as any]: `${i * 60}ms`
-                }}
-              >
-                {char === ' ' ? '\u00A0' : char}
-              </span>
-            ))}
-          </h1>
-          
-          <div className="max-w-2xl">
-            <p className="text-lg md:text-2xl font-light tracking-tight leading-relaxed opacity-80 mb-10 md:mb-16 transition-opacity duration-1000 delay-500" style={{ opacity: isMounted ? 0.8 : 0 }}>
-              is a data-driven designer with experience in branding, digital design, and motion.
-            </p>
-          </div>
+          <p
+            className="hero-intro max-w-4xl text-[1.35rem] sm:text-2xl md:text-3xl lg:text-[2.15rem] mb-10 md:mb-16 transition-opacity duration-1000 delay-300"
+            style={{ opacity: isMounted ? 1 : 0 }}
+          >
+            <span className="block">
+              Hi, I&rsquo;m Wanda{' '}
+              <HeroIntroIcon src={HERO_ICONS.hand} alt="" motion="wave" />
+              {' '}Based in Chicago
+            </span>
+            <span className="block">
+              I&rsquo;m a{' '}
+              <HeroIntroIcon src={HERO_ICONS.pencil} alt="" />
+              {' '}multidisciplinary designer
+            </span>
+            <span className="block">
+              with experience in{' '}
+              <HeroIntroIcon src={HERO_ICONS.paint} alt="" />
+              {' '}
+              <em>branding,</em>
+            </span>
+            <span className="block">
+              <HeroIntroIcon src={HERO_ICONS.desktop} alt="" />
+              {' '}
+              <em>digital design</em> and{' '}
+              <HeroIntroIcon src={HERO_ICONS.star} alt="" motion="bob" />
+              {' '}
+              <em>motion.</em>
+            </span>
+          </p>
 
           <div className="flex flex-col md:flex-row gap-8 md:gap-24 mb-10 md:mb-16 transition-all duration-1000 delay-700" style={{ opacity: isMounted ? 1 : 0, transform: isMounted ? 'none' : 'translateY(20px)' }}>
             <div className="space-y-2">
