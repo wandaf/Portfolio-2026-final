@@ -25,7 +25,7 @@ const About: React.FC = () => {
         </div>
         <div className="md:col-span-8 lg:col-span-7">
           <p className="text-xl md:text-2xl lg:text-3xl font-light font-['IBM_Plex_Serif'] text-gray-700 leading-relaxed">
-            I recently completed a master's degree in Experience Design at VCU's Brandcenter, where I leveled up my skills in UX design and strategy. Most recently, I was a senior designer for Georgetown University. Currently based in Chicago.
+            I recently completed a master's degree in Experience Design at VCU's Brandcenter, where I leveled up my skills in design and strategy. I currently work at Viv Higher Education and am a freelance designer with experience in tech, nonprofits, and finance. Currently based in Chicago.
           </p>
         </div>
       </section>

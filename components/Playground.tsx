@@ -59,7 +59,10 @@ function buildSharpZigzagPath(
 
 const STICKER_EDGE_PATH = buildSharpZigzagPath(100, 100, 93, 82, 24);
 
-const PlaygroundInstagramSticker: React.FC = () => (
+const PlaygroundInstagramSticker: React.FC = () => {
+  const gradientId = `playground-shine-gradient-${React.useId().replace(/:/g, '')}`;
+
+  return (
   <a
     href={PLAYGROUND_INSTAGRAM_URL}
     target="_blank"
@@ -70,7 +73,7 @@ const PlaygroundInstagramSticker: React.FC = () => (
     <svg className="holo-sticker__svg" viewBox="0 0 200 200" aria-hidden>
       <defs>
         <linearGradient
-          id="playground-shine-gradient"
+          id={gradientId}
           gradientUnits="userSpaceOnUse"
           x1="0"
           y1="200"
@@ -96,7 +99,7 @@ const PlaygroundInstagramSticker: React.FC = () => (
         </linearGradient>
       </defs>
       <path d={STICKER_EDGE_PATH} fill="#B8DCE8" />
-      <path d={STICKER_EDGE_PATH} fill="url(#playground-shine-gradient)" pointerEvents="none">
+      <path d={STICKER_EDGE_PATH} fill={`url(#${gradientId})`} pointerEvents="none">
         <animate
           attributeName="opacity"
           values="0; 0; 0.55; 0.85; 0; 0"
@@ -116,7 +119,8 @@ const PlaygroundInstagramSticker: React.FC = () => (
         </span>
     </span>
   </a>
-);
+  );
+};
 
 const PlaygroundItemCard: React.FC<{ item: any; index: number; fullSpan?: boolean }> = ({ item, index, fullSpan }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -166,14 +170,20 @@ const Playground: React.FC = () => {
       <div className="mb-[11.2rem] md:mb-56">
         <header className="relative overflow-visible px-4 md:px-0">
           <div className="relative max-w-xl md:max-w-2xl lg:max-w-3xl">
-            <div className="flex flex-col gap-5 md:relative md:w-fit">
-              <div className="self-end md:absolute md:left-full md:top-0 md:z-10 md:ml-3 md:-translate-y-[96px] md:translate-x-7">
-                <PlaygroundInstagramSticker />
-              </div>
-              <h2 className="text-5xl font-light font-['IBM_Plex_Serif'] tracking-tighter md:text-7xl">
+            <div className="mb-8 flex justify-center md:hidden">
+              <PlaygroundInstagramSticker />
+            </div>
+            <div className="relative hidden md:block md:w-fit">
+              <h2 className="text-7xl font-light font-['IBM_Plex_Serif'] tracking-tighter">
                 Playground
               </h2>
+              <div className="absolute left-full top-0 z-10 ml-3 -translate-y-[96px] translate-x-7">
+                <PlaygroundInstagramSticker />
+              </div>
             </div>
+            <h2 className="text-5xl font-light font-['IBM_Plex_Serif'] tracking-tighter md:hidden">
+              Playground
+            </h2>
             <div className="mt-6 md:mt-8 h-px w-16 md:w-20 bg-white/20" aria-hidden />
             <p className="mt-6 md:mt-8 text-gray-400 text-lg md:text-xl font-light leading-relaxed md:max-w-md lg:max-w-lg">
               A collection of sketches, illustrations, and
