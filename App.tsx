@@ -238,7 +238,7 @@ const App: React.FC = () => {
             <Route
               path="/playground"
               element={
-                <div className="w-full bg-black overflow-x-hidden">
+                <div className="w-full bg-black overflow-x-visible">
                   <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16">
                     <Playground />
                   </div>

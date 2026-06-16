@@ -164,13 +164,13 @@ const Playground: React.FC = () => {
   return (
     <div className="bg-black min-h-screen text-white pt-56 md:pt-[16.8rem] pb-48">
       <div className="mb-[11.2rem] md:mb-56">
-        <header className="relative px-4 md:px-0">
+        <header className="relative overflow-visible px-4 md:px-0">
           <div className="relative max-w-xl md:max-w-2xl lg:max-w-3xl">
-            <div className="relative w-fit">
-              <h2 className="text-5xl md:text-7xl font-light font-['IBM_Plex_Serif'] tracking-tighter">
+            <div className="relative">
+              <h2 className="text-5xl font-light font-['IBM_Plex_Serif'] tracking-tighter max-md:pr-[8.5rem] md:text-7xl">
                 Playground
               </h2>
-              <div className="absolute left-full top-0 ml-2 sm:ml-3 -translate-y-[96px] translate-x-7">
+              <div className="absolute right-0 top-1/2 z-10 -translate-y-1/2 scale-[0.68] origin-center md:left-full md:right-auto md:top-0 md:ml-3 md:translate-x-7 md:-translate-y-[96px] md:scale-100 md:origin-center">
                 <PlaygroundInstagramSticker />
               </div>
             </div>
