@@ -142,6 +142,7 @@ const MCDONALDS_GALLERY_ROW_2 = [
 ];
 const MCDONALDS_ANIME_UNO_INTRO_GIF = 'assets/imgs/Mcdonalds/Demo_AnimexUno_Intro_v001-2-ezgif.com-resize.gif';
 const MCDONALDS_ANIME_UNO_STILL = 'assets/imgs/Mcdonalds/uno.png';
+const MCDONALDS_MOODBOARD = 'assets/imgs/Mcdonalds/moodboard.jpg';
 
 const LULU_HERO = 'assets/imgs/lulu/kYZRTpDanLNfZKlx5CrQG4EF4s.png.webp';
 const LULU_GALLERY_FULL = [
@@ -887,6 +888,15 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                         <p className="mb-10 text-gray-600 font-light text-lg leading-relaxed max-w-2xl">
                           This project was a Happy Meal collaboration between Uno and four anime properties. For this project, in addition to designing UX screens, I storyboarded the intro video for a digital game of Uno where the player can battle against characters from Naruto, SpyxFamily, Boruto, and My Hero Academia. The challenge was to make sure McDonald&apos;s, the anime properties, and Uno were all equally represented. I came up with the idea of a flying Uno card guiding the motion design and using colorful slices to differentiate the animes and characters.
                         </p>
+                        <div className="mb-8 relative w-full max-w-2xl">
+                          <img
+                            src={publicAsset(MCDONALDS_MOODBOARD)}
+                            alt="Anime x Uno moodboard"
+                            loading="lazy"
+                            decoding="async"
+                            className="block h-auto w-full"
+                          />
+                        </div>
                         <div className="flex w-full flex-row flex-nowrap items-center gap-2">
                           <div className="min-w-0 flex-1">
                             <img

@@ -96,7 +96,7 @@ const Sketchbook: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto py-10 md:py-20 px-4 overflow-visible select-none">
+    <div className="w-full max-w-5xl mx-auto py-6 md:py-8 px-4 overflow-visible select-none">
       <style>
         {`
           :root {
@@ -110,7 +110,7 @@ const Sketchbook: React.FC = () => {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: calc(var(--book-height) + 100px);
+            min-height: calc(var(--book-height) + 48px);
             transform: translateZ(0);
             -webkit-transform: translateZ(0);
           }
@@ -162,19 +162,19 @@ const Sketchbook: React.FC = () => {
           }
 
           .face-front {
-            border-top-right-radius: 6px;
-            border-bottom-right-radius: 6px;
-            border-top-left-radius: 2px;
-            border-bottom-left-radius: 2px;
+            border-top-right-radius: 14px;
+            border-bottom-right-radius: 14px;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
           }
 
           .face-back {
             transform: rotateY(180deg) translateZ(0.1px);
             -webkit-transform: rotateY(180deg) translateZ(0.1px);
-            border-top-left-radius: 6px;
-            border-bottom-left-radius: 6px;
-            border-top-right-radius: 2px;
-            border-bottom-right-radius: 2px;
+            border-top-left-radius: 14px;
+            border-bottom-left-radius: 14px;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
           }
 
           .spine-accent {
@@ -205,15 +205,12 @@ const Sketchbook: React.FC = () => {
         `}
       </style>
 
-      <div className="flex flex-col items-center gap-12">
-        <div className="text-center">
-          <h3 className="text-2xl md:text-3xl font-light font-['IBM_Plex_Serif'] text-white mb-2">
-            Take a Peek into my Sketches
-          </h3>
-          <p className="text-[10px] uppercase tracking-[0.4em] text-white/40 font-mono-tag">
-            Click to Explore
-          </p>
-        </div>
+      <div className="flex flex-col items-center gap-6 md:gap-8">
+        <p className="text-center text-2xl md:text-3xl font-light font-['IBM_Plex_Serif'] text-white">
+          Click to explore
+          <br />
+          my sketchbook
+        </p>
 
         <div className="book-viewport w-full">
           <div 
@@ -274,7 +271,7 @@ const Sketchbook: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex flex-col items-center gap-6">
+        <div className="flex flex-col items-center gap-3">
           <div className="flex items-center gap-3">
             {SKETCHES.map((_, idx) => (
               <button 
