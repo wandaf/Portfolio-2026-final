@@ -117,25 +117,6 @@
           width: 9.35rem;
           height: 9.35rem;
         }
-
-        .holo-sticker__inner {
-          width: 70%;
-          height: auto;
-          overflow: visible;
-          border-radius: 0;
-          padding: 0.25rem;
-        }
-
-        .holo-sticker__texture,
-        .holo-sticker__gloss {
-          display: none;
-        }
-
-        .holo-sticker__text {
-          font-size: 6.525pt;
-          line-height: 1.22;
-          letter-spacing: 0;
-        }
       }
 
       .holo-sticker:hover {
@@ -204,6 +185,28 @@
         letter-spacing: 0.01em;
         text-transform: uppercase;
         color: rgba(0, 0, 0, 0.88);
+      }
+
+      @media (max-width: 767px) {
+        .holo-sticker__inner {
+          width: 62%;
+          height: auto;
+          max-height: none;
+          overflow: visible;
+          border-radius: 0;
+          padding: 0.2rem 0.1rem;
+        }
+
+        .holo-sticker__texture,
+        .holo-sticker__gloss {
+          display: none;
+        }
+
+        .holo-sticker__text {
+          font-size: 6.525pt;
+          line-height: 1.2;
+          letter-spacing: 0;
+        }
       }
     </style>
 <script type="importmap">
