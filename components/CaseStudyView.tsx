@@ -888,7 +888,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                         <p className="mb-10 text-gray-600 font-light text-lg leading-relaxed max-w-2xl">
                           This project was a Happy Meal collaboration between Uno and four anime properties. For this project, in addition to designing UX screens, I storyboarded the intro video for a digital game of Uno where the player can battle against characters from Naruto, SpyxFamily, Boruto, and My Hero Academia. The challenge was to make sure McDonald&apos;s, the anime properties, and Uno were all equally represented. I came up with the idea of a flying Uno card guiding the motion design and using colorful slices to differentiate the animes and characters.
                         </p>
-                        <div className="mb-8 relative w-full max-w-2xl">
+                        <div className="relative mb-8 w-full">
                           <img
                             src={publicAsset(MCDONALDS_MOODBOARD)}
                             alt="Anime x Uno moodboard"

@@ -34,19 +34,6 @@ export const CASE_STUDIES: CaseStudy[] = [
     tools: "Figma, AfterEffects"
   },
   {
-    id: 2,
-    slug: "mta-open-source",
-    title: "MTA Open Source Challenge",
-    category: "Data Visualization Design",
-    subhead: "Designing and coding a data visualization web app from the ground up",
-    tags: ["UI/UX", "Mobile App"],
-    imageUrl: "assets/imgs/Case1.png",
-    description: "Designing and coding a data visualization web app from the ground up",
-    timeline: "5 Weeks",
-    role: "Designer, Developer",
-    tools: "Figma, D3.js, CSS, HTML, AfterEffects"
-  },
-  {
     id: 6,
     slug: 'lululemon-campaign',
     title: 'Lululemon Campaign',
@@ -72,6 +59,19 @@ export const CASE_STUDIES: CaseStudy[] = [
     role: "Visual Designer",
     tools: "InDesign, AfterEffects, Figma",
     year: "2025-Ongoing"
+  },
+  {
+    id: 2,
+    slug: "mta-open-source",
+    title: "MTA Open Source Challenge",
+    category: "Data Visualization Design",
+    subhead: "Designing and coding a data visualization web app from the ground up",
+    tags: ["UI/UX", "Mobile App"],
+    imageUrl: "assets/imgs/Case1.png",
+    description: "Designing and coding a data visualization web app from the ground up",
+    timeline: "5 Weeks",
+    role: "Designer, Developer",
+    tools: "Figma, D3.js, CSS, HTML, AfterEffects"
   },
   {
     id: 8,

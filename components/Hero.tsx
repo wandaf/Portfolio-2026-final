@@ -116,7 +116,7 @@ const Hero: React.FC = () => {
           
           <div className="max-w-2xl">
             <p className="text-lg md:text-2xl font-light tracking-tight leading-relaxed opacity-80 mb-10 md:mb-16 transition-opacity duration-1000 delay-500" style={{ opacity: isMounted ? 0.8 : 0 }}>
-              is a data-driven designer with experience in branding, UX design, and motion.
+              is a data-driven designer with experience in branding, digital design, and motion.
             </p>
           </div>
 
@@ -124,7 +124,7 @@ const Hero: React.FC = () => {
             <div className="space-y-2">
               <h3 className="text-[10px] md:text-[11px] uppercase tracking-[0.3em] font-medium text-white font-mono-tag">Focus</h3>
               <p className="text-xs md:text-sm opacity-50 font-light max-w-[200px]">
-                Branding, UX Design,
+                Branding, Digital Design,
                 <br />
                 and motion
               </p>
@@ -153,7 +153,7 @@ const Hero: React.FC = () => {
               </div>
               <span className="text-white font-light">|</span>
             </div>
-            <span className="text-[9px] md:text-[11px] uppercase tracking-[0.3em] font-medium text-white">Freelance Designer</span>
+            <span className="text-[9px] md:text-[11px] uppercase tracking-[0.3em] font-medium text-white">Designer @ Viv Higher Education</span>
           </div>
         </div>
       </div>
