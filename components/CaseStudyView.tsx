@@ -509,6 +509,10 @@ const FACELESS_GIFS = [
   'assets/imgs/Faceless Affair/12.gif',
 ];
 
+const GEORGETOWN_HERO = 'assets/Georgetown/1812.jpg';
+const GEORGETOWN_HANDWRITING = 'assets/Georgetown/Screenshot 2026-06-17 at 12.26.26\u202fAM.png';
+const GEORGETOWN_CAMPAIGN_URL = 'https://calledtobe.georgetown.edu';
+
 const MtaExperienceCallout: React.FC<{ href?: string }> = ({ href = publicHref('mta-transit') }) => (
   <div className="rounded-2xl bg-[#e0e7ff] p-8 md:p-10 max-w-2xl">
     <p className="text-xl md:text-2xl font-light font-['IBM_Plex_Serif'] text-gray-900 mb-2">
@@ -525,6 +529,19 @@ const MtaExperienceCallout: React.FC<{ href?: string }> = ({ href = publicHref('
       View live visualization
     </a>
   </div>
+);
+
+const GeorgetownCampaignCallout: React.FC<{ href?: string }> = ({
+  href = GEORGETOWN_CAMPAIGN_URL,
+}) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-block rounded-xl bg-[#212529] px-6 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90"
+  >
+    View Campaign Site
+  </a>
 );
 
 const ResearchDeckCallout: React.FC<{ deckUrl?: string }> = ({
@@ -564,6 +581,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
   const isFaceless = study.slug === 'faceless-affair' || study.id === 3;
   const isVivBrand = study.slug === 'viv-brand-project' || study.id === 8;
   const isLululemon = study.slug === 'lululemon-campaign' || study.id === 6;
+  const isGeorgetown = study.slug === 'kinetics-branding' || study.id === 7;
 
   const sections = isMcdonalds
     ? [
@@ -613,6 +631,12 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
         { id: 'overview', label: 'Overview' },
         { id: 'visual-identity', label: 'Visual Identity' },
         { id: 'gallery', label: 'Gallery' },
+      ]
+    : isGeorgetown
+    ? [
+        { id: 'overview', label: 'Overview' },
+        { id: 'handwriting', label: 'Handwriting' },
+        { id: 'conclusion', label: 'Conclusion' },
       ]
     : [
         { id: 'overview', label: 'Overview' },
@@ -680,6 +704,8 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
               ? 'assets/imgs/Viv Brand/heroImage.jpg'
               : isLululemon
               ? LULU_HERO
+              : isGeorgetown
+              ? GEORGETOWN_HERO
               : study.slug === 'editorial-design'
               ? 'assets/imgs/Editorial/2I7GWougET3BKSbEA8Rqq5vg.png'
               : study.imageUrl
@@ -734,6 +760,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
           {/* Sticky Container */}
           <div className="flex flex-col md:flex-row gap-10 lg:gap-24 items-start">
             {/* Index Sidebar (hidden on mobile) */}
+            {!isGeorgetown && (
             <aside className="hidden md:block md:w-[120px] sticky top-40 mb-12 md:mb-0 h-fit shrink-0 md:-ml-6 lg:-ml-10">
               <nav className="flex flex-col gap-6">
                 {sections.map(section => (
@@ -751,6 +778,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                 ))}
               </nav>
             </aside>
+            )}
 
             {/* Content Body */}
             <div className="min-w-0 flex-1 space-y-[6.4rem] overflow-x-clip">
@@ -1606,6 +1634,57 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                           <LululemonOohPair />
                         </div>
                       </div>
+                    </FadeInSection>
+                  </section>
+                </>
+              ) : isGeorgetown ? (
+                <>
+                  <section id="overview" className="scroll-mt-40">
+                    <FadeInSection>
+                      <div className="space-y-10 text-gray-600 font-light text-lg leading-relaxed max-w-2xl">
+                        <p>
+                          While a designer at Georgetown University, the largest campaign the creative team worked on was the visual identity for a multi-year giving campaign. The campaign was designed entirely in-house with a team of 6 with a limited budget. The team developed a new guidebook specifically for campaign specifications. Throughout the process, I was responsible for concepting and research, curating a photo library, designing a toolkit of print and digital assets including stationery, pamphlets, and marketing templates. I also designed deliverables such as invitations, web assets, and signage.
+                        </p>
+                        <GeorgetownCampaignCallout />
+                      </div>
+                      <div className="relative mt-12 w-full">
+                        <img
+                          src={publicAsset(GEORGETOWN_HERO)}
+                          alt="Georgetown University campaign collateral"
+                          loading="lazy"
+                          decoding="async"
+                          className="block h-auto w-full"
+                        />
+                      </div>
+                    </FadeInSection>
+                  </section>
+
+                  <section id="handwriting" className="scroll-mt-40">
+                    <FadeInSection>
+                      <SectionHeading title="Handwriting" />
+                      <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2 md:gap-12">
+                        <div className="relative w-full">
+                          <img
+                            src={publicAsset(GEORGETOWN_HANDWRITING)}
+                            alt="Georgetown campaign handwriting examples"
+                            loading="lazy"
+                            decoding="async"
+                            className="block h-auto w-full"
+                          />
+                        </div>
+                        <p className="text-gray-600 font-light text-lg leading-relaxed">
+                          Throughout the campaign, we use handwriting to express a person&apos;s unique calling and help tell the stories of members of the Georgetown community in their own authentic voice. The act of writing or recording your calling often serves as a catalyst to take action.
+                        </p>
+                      </div>
+                    </FadeInSection>
+                  </section>
+
+                  <section id="conclusion" className="scroll-mt-40">
+                    <FadeInSection>
+                      <SectionHeading title="Conclusion" />
+                      <p className="max-w-2xl text-gray-600 font-light text-lg leading-relaxed">
+                        I enjoyed this project for the amount of research and deliberation that went into the imagery, logo, and use of brand assets such as parts of the traditional seal.
+                      </p>
                     </FadeInSection>
                   </section>
                 </>

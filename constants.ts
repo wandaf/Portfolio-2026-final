@@ -88,17 +88,18 @@ export const CASE_STUDIES: CaseStudy[] = [
     year: "2026"
   },
   {
-    id: 3,
-    slug: "faceless-affair",
-    title: "Faceless Affair",
-    category: "App and Experience Design",
-    subhead: "A Knives Out murder mystery experience utilizing AR",
-    tags: ["UX Design", "Game Design"],
-    imageUrl: "assets/imgs/Case6.png",
-    description: "A Knives Out murder mystery experience utilizing AR",
-    timeline: "3 Weeks",
-    role: "Designer, Researcher",
-    tools: "Figma, Adobe Illustrator, AfterEffects"
+    id: 7,
+    slug: "kinetics-branding",
+    title: "Georgetown University Campaigns",
+    category: "PRINT AND DIGITAL DESIGN",
+    subhead: "Designing for campaigns, schools, and events at Georgetown",
+    tags: ["Campaign Design", "Web Design"],
+    imageUrl: "assets/Georgetown/1812.jpg",
+    description: "Designing for campaigns, schools, and events at Georgetown",
+    timeline: "6 months",
+    role: "Designer",
+    tools: "Adobe Creative Suite",
+    year: "2023"
   },
   {
     id: 5,
@@ -114,18 +115,17 @@ export const CASE_STUDIES: CaseStudy[] = [
     tools: "Adobe InDesign"
   },
   {
-    id: 7,
-    slug: "kinetics-branding",
-    title: "Georgetown University campaigns",
-    category: "Campaign Design",
-    subhead: "Designing a $6 billion dollar fundraising campaign",
-    tags: ["Campaign Design", "Web Design"],
-    imageUrl: "assets/imgs/GU.png",
-    description: "Designing a $6 billion dollar fundraising campaign",
-    timeline: "Ongoing",
-    role: "Designer",
-    tools: "Figma, Adobe Creative Suite",
-    externalUrl: "https://calledtobe.georgetown.edu"
+    id: 3,
+    slug: "faceless-affair",
+    title: "Faceless Affair",
+    category: "App and Experience Design",
+    subhead: "A Knives Out murder mystery experience utilizing AR",
+    tags: ["UX Design", "Game Design"],
+    imageUrl: "assets/imgs/Case6.png",
+    description: "A Knives Out murder mystery experience utilizing AR",
+    timeline: "3 Weeks",
+    role: "Designer, Researcher",
+    tools: "Figma, Adobe Illustrator, AfterEffects"
   }
 ];
 
