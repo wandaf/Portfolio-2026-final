@@ -18,7 +18,7 @@ const Branding: React.FC<BrandingProps> = ({ isDarkMode, onPageChange, scrollY }
   const nameOpacity = Math.max(0, 1 - scrollY / scrollRange);
   
   // Dynamically collapse width to ensure the button hit-area remains centered on the icon
-  const nameMaxWidth = progress >= 1 ? '0px' : '150px';
+  const nameMaxWidth = progress >= 1 ? '0px' : 'min(80vw, 22rem)';
   const nameMargin = progress >= 1 ? '0rem' : '0.75rem';
   
   const iconRotation = scrollY * 0.2;
@@ -113,7 +113,7 @@ const Branding: React.FC<BrandingProps> = ({ isDarkMode, onPageChange, scrollY }
           }}
         >
           <span className="text-[12px] md:text-[15px] font-medium uppercase tracking-[0.4em] whitespace-nowrap leading-none flex items-center h-full pt-[2px]">
-            Wanda F
+            Wanda Felsenhardt
           </span>
         </div>
       </button>
