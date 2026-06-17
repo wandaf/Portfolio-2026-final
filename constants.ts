@@ -94,7 +94,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     category: "PRINT AND DIGITAL DESIGN",
     subhead: "Designing for campaigns, schools, and events at Georgetown",
     tags: ["Campaign Design", "Web Design"],
-    imageUrl: "assets/Georgetown/1812.jpg",
+    imageUrl: "assets/imgs/GU.png",
     description: "Designing for campaigns, schools, and events at Georgetown",
     timeline: "6 months",
     role: "Designer",
