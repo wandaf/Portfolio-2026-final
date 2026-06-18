@@ -75,11 +75,12 @@ const Hero: React.FC = () => {
       <div
         className="pointer-events-none absolute bottom-0 left-0 right-0 z-[1]"
         style={{
-          height: `${whiteFadeProgress * 100}vh`,
+          height: `${Math.round(whiteFadeProgress * vh)}px`,
           maxHeight: '100%',
           background:
             'linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 28%, rgba(255,255,255,0.95) 48%, rgba(255,255,255,0.68) 66%, rgba(255,255,255,0.26) 84%, rgba(255,255,255,0) 100%)',
           opacity: whiteFadeProgress > 0 ? 1 : 0,
+          willChange: 'height',
         }}
         aria-hidden
       />
