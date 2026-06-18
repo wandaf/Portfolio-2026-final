@@ -55,6 +55,10 @@ h6,
   transform: translateY(0);
 }
 
+.fade-up-element.fade-up-fast {
+  transition-duration: 0.4s;
+}
+
 @keyframes work-glow-pulse {
   0%,
   100% {

@@ -94,7 +94,6 @@ const HIGHER_ED_ROOSEVELT_SLIDES = [1, 2, 3, 4, 5, 6, 7].map((n) => `assets/HIGH
 const HIGHER_ED_ROOSEVELT_GIFS = [
   'assets/HIGHER ED/Story1.gif',
   'assets/HIGHER ED/Story1-002.gif',
-  'assets/HIGHER ED/Story1-004.gif',
 ];
 
 const HIGHER_ED_GALLERY_CAPTIONS = [
@@ -799,7 +798,7 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                   </section>
 
                   <section id="visuals" className="scroll-mt-40">
-                    <FadeInSection>
+                    <FadeInSection className="fade-up-fast">
                       <SectionHeading title="Gallery" />
                       <div className="space-y-8">
                         <GalleryBlockHeading
@@ -807,9 +806,9 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                           description={HIGHER_ED_GALLERY_CAPTIONS[4].description}
                         />
                         <HigherEdRooseveltSlideshow />
-                        <div className="grid w-full grid-cols-3 gap-4 md:gap-6">
+                        <div className="flex w-full justify-center gap-4 md:gap-6">
                           {HIGHER_ED_ROOSEVELT_GIFS.map((src, index) => (
-                            <div key={src} className="relative w-full overflow-hidden rounded-lg">
+                            <div key={src} className="relative w-1/3 overflow-hidden rounded-lg">
                               <img
                                 src={encodeURI(src)}
                                 alt={`Roosevelt University campaign animation ${index + 1}`}
