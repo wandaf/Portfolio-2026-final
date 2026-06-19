@@ -808,13 +808,13 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                         <HigherEdRooseveltSlideshow />
                         <div className="flex w-full justify-center gap-4 md:gap-6">
                           {HIGHER_ED_ROOSEVELT_GIFS.map((src, index) => (
-                            <div key={src} className="relative w-1/3 overflow-hidden rounded-lg">
+                            <div key={src} className="relative w-1/3 overflow-hidden rounded-lg bg-white">
                               <img
                                 src={encodeURI(src)}
                                 alt={`Roosevelt University campaign animation ${index + 1}`}
                                 loading="lazy"
                                 decoding="async"
-                                className="block h-auto w-full"
+                                className="block h-auto w-full bg-white"
                               />
                             </div>
                           ))}
