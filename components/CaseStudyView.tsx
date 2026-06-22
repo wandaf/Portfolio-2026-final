@@ -93,7 +93,7 @@ const HIGHER_ED_DESKTOP = [
 const HIGHER_ED_ROOSEVELT_SLIDES = [1, 2, 3, 4, 5, 6, 7].map((n) => `assets/HIGHER ED/${n}.jpg`);
 const HIGHER_ED_ROOSEVELT_GIFS = [
   'assets/HIGHER ED/Story1.gif',
-  'assets/HIGHER ED/Story1-002.gif',
+  'assets/HIGHER ED/Story1-004.gif',
 ];
 
 const HIGHER_ED_GALLERY_CAPTIONS = [
