@@ -147,6 +147,7 @@ const MCDONALDS_GALLERY_ROW_2 = [
 const MCDONALDS_ANIME_UNO_INTRO_GIF = 'assets/imgs/Mcdonalds/Demo_AnimexUno_Intro_v001-2-ezgif.com-resize.gif';
 const MCDONALDS_ANIME_UNO_STILL = 'assets/imgs/Mcdonalds/uno.png';
 const MCDONALDS_MOODBOARD = 'assets/imgs/Mcdonalds/moodboard.jpg';
+const MCDONALDS_ANIME_UNO_LEADERBOARD = 'assets/imgs/Mcdonalds/Desktop - 25.jpg';
 
 const LULU_HERO = 'assets/imgs/lulu/kYZRTpDanLNfZKlx5CrQG4EF4s.png.webp';
 const LULU_GALLERY_FULL = [
@@ -764,7 +765,6 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
           {/* Sticky Container */}
           <div className="flex flex-col md:flex-row gap-10 lg:gap-24 items-start">
             {/* Index Sidebar (hidden on mobile) */}
-            {!isGeorgetown && (
             <aside className="hidden md:block md:w-[120px] sticky top-40 mb-12 md:mb-0 h-fit shrink-0 md:-ml-6 lg:-ml-10">
               <nav className="flex flex-col gap-6">
                 {sections.map(section => (
@@ -782,7 +782,6 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                 ))}
               </nav>
             </aside>
-            )}
 
             {/* Content Body */}
             <div className="min-w-0 flex-1 space-y-[6.4rem] overflow-x-clip">
@@ -806,15 +805,15 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                           description={HIGHER_ED_GALLERY_CAPTIONS[4].description}
                         />
                         <HigherEdRooseveltSlideshow />
-                        <div className="flex w-full justify-center gap-4 md:gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-[22px]">
                           {HIGHER_ED_ROOSEVELT_GIFS.map((src, index) => (
-                            <div key={src} className="relative w-1/3 overflow-hidden rounded-lg bg-white">
+                            <div key={src} className="relative w-full flex items-center justify-center p-6">
                               <img
                                 src={encodeURI(src)}
                                 alt={`Roosevelt University campaign animation ${index + 1}`}
                                 loading="lazy"
                                 decoding="async"
-                                className="block h-auto w-full bg-white"
+                                className="w-[75%] h-auto block rounded-lg bg-white"
                               />
                             </div>
                           ))}
@@ -961,6 +960,23 @@ const CaseStudyView: React.FC<CaseStudyViewProps> = ({ study }) => {
                               decoding="async"
                               draggable={false}
                               className="block h-auto w-full object-contain object-center"
+                            />
+                          </div>
+                        </div>
+                        <div className="pt-6">
+                          <h3 className="max-w-2xl text-2xl font-serif-heading font-semibold text-gray-900 mb-4">
+                            Leaderboard Screen Design
+                          </h3>
+                          <p className="text-gray-600 font-light text-lg leading-relaxed max-w-2xl mb-8">
+                            For this game, I worked on designing variations of a new screen. I went through multiple iterations of a screen which would show the player&apos;s ranking at the end of the game. I created variations that included character names, points, and numerical ranking. The final screen on the right is built to be easily customized in Figma based off of future game requirements.
+                          </p>
+                          <div className="relative w-full">
+                            <img
+                              src={publicAsset(MCDONALDS_ANIME_UNO_LEADERBOARD)}
+                              alt="Anime x Uno leaderboard screen design variations"
+                              loading="lazy"
+                              decoding="async"
+                              className="block h-auto w-full"
                             />
                           </div>
                         </div>
